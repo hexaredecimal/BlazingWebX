@@ -1,4 +1,4 @@
-package blaze;
+package genz;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,20 +7,20 @@ import java.util.List;
  *
  * @author hexaredecimal
  */
-public class BlazeContainerElement extends BlazeElement {
-	protected List<BlazeElement> children; 
+public class GenZContainerElement extends GenZElement {
+	protected List<GenZElement> children; 
 	
-	public BlazeContainerElement() {
+	public GenZContainerElement() {
 		this.children = new ArrayList<>();
 	}
 
-	public BlazeContainerElement addChild(BlazeElement child) {
+	public GenZContainerElement addChild(GenZElement child) {
 		this.children.add(child); 
 		return this; 
 	}
 
 	@Override
-	public BlazeContainerElement addAttribute(String key, String value) {
+	public GenZContainerElement addAttribute(String key, String value) {
 		super.addAttribute(key, value);
 		return this; 
 	}
@@ -37,25 +37,25 @@ public class BlazeContainerElement extends BlazeElement {
 	}
 
 	@Override
-	public BlazeContainerElement hxPost(String path) {
+	public GenZContainerElement hxPost(String path) {
 		super.addAttribute("hx-post", path);
 		return this;
 	}
 
 	@Override
-	public BlazeContainerElement hxGet(String path) {
+	public GenZContainerElement hxGet(String path) {
 		super.addAttribute("hx-get", path);
 		return this;
 	}
 
 	@Override
-	public BlazeContainerElement id(String id) {
+	public GenZContainerElement id(String id) {
 		super.addAttribute("id", id);
 		return this;
 	}
 	
 	@Override
-	public BlazeContainerElement className(String names) {
+	public GenZContainerElement className(String names) {
 		super.addAttribute("class", names);
 		return this;
 	}

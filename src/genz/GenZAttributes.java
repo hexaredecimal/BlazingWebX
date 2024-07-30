@@ -1,4 +1,4 @@
-package blaze;
+package genz;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,19 +7,19 @@ import java.util.List;
  *
  * @author hexaredecimal
  */
-public class BlazeAttributes {
-	private final List<BlazeAttribute> attributes; 
+public class GenZAttributes {
+	private final List<GenZAttribute> attributes; 
 
-	public BlazeAttributes() {
+	public GenZAttributes() {
 		this.attributes = new ArrayList<>();
 	}
 
-	public BlazeAttributes addAttribute(String key, String value) {
-		this.attributes.add(new BlazeAttribute(key, value)); 
+	public GenZAttributes addAttribute(String key, String value) {
+		this.attributes.add(new GenZAttribute(key, value)); 
 		return this; 
 	}
 
-	public BlazeAttributes addAttribute(BlazeAttribute attribute) {
+	public GenZAttributes addAttribute(GenZAttribute attribute) {
 		this.attributes.add(attribute); 
 		return this;
 	}
@@ -34,10 +34,10 @@ public class BlazeAttributes {
 		}
 		return sb.toString();
 	}
-	public BlazeAttribute getFirst() { return this.attributes.getFirst(); }
-	public BlazeAttribute getLast() { return this.attributes.getLast(); }
-	public BlazeAttributes getSlice(int start, int end) {
-		BlazeAttributes self = new BlazeAttributes(); 
+	public GenZAttribute getFirst() { return this.attributes.getFirst(); }
+	public GenZAttribute getLast() { return this.attributes.getLast(); }
+	public GenZAttributes getSlice(int start, int end) {
+		GenZAttributes self = new GenZAttributes(); 
 		if (start >= 0 && end < self.attributes.size()) {
 			for (int i = start; i < end; i++) {
 				self.addAttribute(attributes.get(i));
@@ -45,8 +45,8 @@ public class BlazeAttributes {
 		}
 		return self;
 	}
-	public BlazeAttributes getSlice(int end) {
-		BlazeAttributes self = new BlazeAttributes(); 
+	public GenZAttributes getSlice(int end) {
+		GenZAttributes self = new GenZAttributes(); 
 		if (end < self.attributes.size()) {
 			for (int i = 0; i < end; i++) {
 				self.addAttribute(attributes.get(i));

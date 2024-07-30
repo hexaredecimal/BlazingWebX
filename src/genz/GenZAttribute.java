@@ -1,13 +1,13 @@
-package blaze;
+package genz;
 
 /**
  *
  * @author hexaredecimal
  */
-public class BlazeAttribute {
+public class GenZAttribute {
 	private String key, value; 
 	
-	public BlazeAttribute(String key, String value)  {
+	public GenZAttribute(String key, String value)  {
 		this.key = key;
 		this.value = value; 
 	}

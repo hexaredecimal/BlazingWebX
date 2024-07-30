@@ -1,33 +1,33 @@
-package blaze;
+package genz;
 
 /**
  *
  * @author hexaredecimal
  */
-public abstract class BlazeElement {
-	protected BlazeAttributes attributes = new BlazeAttributes(); 
+public abstract class GenZElement {
+	protected GenZAttributes attributes = new GenZAttributes(); 
 
-	public BlazeElement addAttribute(String key, String value) {
+	public GenZElement addAttribute(String key, String value) {
 		this.attributes.addAttribute(key, value);
 		return this; 
 	}
 
-	public BlazeElement hxPost(String path) {
+	public GenZElement hxPost(String path) {
 		this.addAttribute("hx-post", path);
 		return this;
 	}
 
-	public BlazeElement hxGet(String path) {
+	public GenZElement hxGet(String path) {
 		this.addAttribute("hx-get", path);
 		return this;
 	}
 
-	public BlazeElement id(String id) {
+	public GenZElement id(String id) {
 		this.addAttribute("id", id);
 		return this;
 	}
 	
-	public BlazeElement className(String names) {
+	public GenZElement className(String names) {
 		this.addAttribute("class", names);
 		return this;
 	}

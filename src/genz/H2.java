@@ -1,10 +1,10 @@
-package blaze;
+package genz;
 
 /**
  *
  * @author hexaredecimal
  */
-public class H2 extends BlazeContainerElement {
+public class H2 extends GenZContainerElement {
 	protected String innerText; 
 
 	public H2() {

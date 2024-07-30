@@ -1,10 +1,10 @@
-package blaze;
+package genz;
 
 /**
  *
  * @author hexaredecimal
  */
-public class Hr extends BlazeElement {
+public class Hr extends GenZElement {
 
 	@Override
 	public String render() {

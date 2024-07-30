@@ -1,10 +1,10 @@
-package blaze;
+package genz;
 
 /**
  *
  * @author hexaredecimal
  */
-public class Img extends BlazeElement {
+public class Img extends GenZElement {
 	private String path, alt; 
 
 	public Img() {
