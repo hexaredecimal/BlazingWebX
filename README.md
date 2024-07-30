@@ -28,8 +28,7 @@ BlazeContainerElement container = new Main()
         new P().className("text-white")
             .addChild(
                 new H1("hello").className("text-lg")
-                    .addChild(new B![boomers_as_lizard_people_using_reactjs](https://github.com/user-attachments/assets/f5fc2e6d-1ed3-4ff0-8109-a1f3c5ef0144)
-r())
+                    .addChild(new Br())
                     .addChild(
                         new Div().style("border: 1px solid red")
                             .addChild(
