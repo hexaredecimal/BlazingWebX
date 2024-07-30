@@ -67,7 +67,7 @@
 
 ## Final words
 If you have made it here without raging or laughing out loud (We have to spell it for the Boomers), I would like to say thank you
-for taking time and looking at our project. The goals for the project are 1000% satirical, but there is some truth in all jokes and the truth is
-there is a lot of industry bias and discrimination against genz because we are not willing to break ourselves for companies that don't care 
-about our well beings. 
+for taking time and looking at our project. The goals for the project are 1000% satirical, but there is some truth in all jokes. The truth is
+that there is a lot of industry bias and discrimination against genz because we are not willing to break ourselves for companies that don't care 
+about our well beings. Sorry boomers and GenX but we have seen throught the BS. "Love ya'll, lol, xxx" - GenZ 
 
