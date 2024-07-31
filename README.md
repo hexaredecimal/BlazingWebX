@@ -4,32 +4,39 @@
 # Example
 #### Web server
 >> Coming Soon
+>
 
 #### UI creation
 ```java
-BlazeContainerElement container = new Main()
-    .addChild(
-        new P().className("text-white")
-            .addChild(
-                new H1("hello").className("text-lg")
-                    .addChild(new Br())
-                    .addChild(
-                        new Div().style("border: 1px solid red")
-                            .addChild(
-                                new Img().src("/path/to/image")
-                                    .alt("A picture of my cat")
-                                    .className("w-full h-full")
-                            )
-                    )
-                    .addChild(
-                        new Span().attr("temp", "12344")
-                            .attr("uuid", "0x0001")
-                    )
-                    .addChild(new Hr())
-            )
-    );
+    GenZContainerElement e = new Main().
+      addChild(
+        new P()
+          .addAttribute("class", "text-white")
+          .addChild(
+            new H1("hello")
+              .className("text-lg")
+              .addChild(new Br())
+              .addChild(
+                new Div()
+                  .addAttribute("style", "border: 1px solid red")
+                  .addChild(
+                    new Img()
+                      .src("/path/to/imag")
+                      .alt("A picture of my cat")
+                      .className("w-full h-full")
+                  )
+              )
+              .addChild(
+                new Span()
+                  .addAttribute("temp", "12344")
+                  .addAttribute("uuid", "0x0001")
+              )
+              .addChild(new Hr())
+          ));
+
 ```
 
+<<<<<<< HEAD
 #### HATEOAS Examples
 >> Coming Soon
 
@@ -51,6 +58,25 @@ BlazeContainerElement container = new Main()
 >> As it currently stands, the industry treats frameworks as means to get into heaven. It's mostly like `Use React and get your sins forgiven` or `Use spring boot to avoid the devil`. You know who the devil is? the people who start projects and center their lives around frameworks and libraries.... yes, I'm taking to you Boomer React dev, to you GenX Spring Boot enjoyer and to you GenZ follower of hype trends.
 
 
+=======
 
- 
+### HATEOAS Examples
+>> Coming Soon
+
+
+## Boomers in the wild
+>>>>>>> 7fe345097b17681cad7535e46e09f8ce8e07d623
+
+<img src="https://github.com/user-attachments/assets/f3a18685-8e51-43c1-989f-a55081afd72d" width="40%" />
+<img src="https://github.com/user-attachments/assets/8f222769-d18d-400e-a9fe-6494cfedb803" width="40%" />
+
+## Boomers Gatekeeping the industry
+<img src="https://github.com/user-attachments/assets/874eb592-fea3-4034-8ba1-575f3b5aeaa8" width="40%" />
+"Back in my day we had to code from outside the fence" - Boomer
+
+## Final words
+If you have made it here without raging or laughing out loud (We have to spell it for the Boomers), I would like to say thank you
+for taking time and looking at our project. The goals for the project are 1000% satirical, but there is some truth in all jokes. The truth is
+that there is a lot of industry bias and discrimination against genz because we are not willing to break ourselves for companies that don't care 
+about our well beings. Sorry boomers and GenX but we have seen throught the BS. "Love ya'll, lol, xxx" - GenZ 
 
