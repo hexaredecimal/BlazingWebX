@@ -20,8 +20,8 @@ public class GenZContainerElement extends GenZElement {
 	}
 
 	@Override
-	public GenZContainerElement addAttribute(String key, String value) {
-		super.addAttribute(key, value);
+	public GenZContainerElement attr(String key, String value) {
+		super.attr(key, value);
 		return this; 
 	}
 	
@@ -38,25 +38,25 @@ public class GenZContainerElement extends GenZElement {
 
 	@Override
 	public GenZContainerElement hxPost(String path) {
-		super.addAttribute("hx-post", path);
+		super.attr("hx-post", path);
 		return this;
 	}
 
 	@Override
 	public GenZContainerElement hxGet(String path) {
-		super.addAttribute("hx-get", path);
+		super.attr("hx-get", path);
 		return this;
 	}
 
 	@Override
 	public GenZContainerElement id(String id) {
-		super.addAttribute("id", id);
+		super.attr("id", id);
 		return this;
 	}
 	
 	@Override
 	public GenZContainerElement className(String names) {
-		super.addAttribute("class", names);
+		super.attr("class", names);
 		return this;
 	}
 
