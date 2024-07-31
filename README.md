@@ -35,8 +35,6 @@
           ));
 
 ```
-
-<<<<<<< HEAD
 #### HATEOAS Examples
 >> Coming Soon
 
