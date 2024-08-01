@@ -4,21 +4,20 @@ package genz;
  *
  * @author hexaredecimal
  */
-public class P extends GenZContainerElement {
+public class Button extends GenZContainerElement {
 	protected String innerText; 
 
-	public P() {
+	public Button() {
 		this.innerText = ""; 
 	}
 	
-	public P(String text) {
+	public Button(String text) {
 		this.innerText = text; 
 	}
 	
 	
 	@Override
 	public String render() {
-		return String.format("<p %s>%s\n%s</p>", attributes.render(), innerText, super.render());
-
+		return String.format("<button %s>%s\n%s</button>", attributes.render(), innerText, super.render());
 	}
 }
