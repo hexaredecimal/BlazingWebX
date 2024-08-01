@@ -62,5 +62,12 @@ Run your program and visit https://localhost:6900 or whateve port you chose.
 You should have an button with the text `Click me` and if you trigger the click event the text `Hello, World` should replace 
 the button. 
 
+## Why
+- Remove the complexity associated with creating webapps.
+- Allow for reuse of tools and knowledge, hence not making tertiary education completely useless by imposing weird industry standards for frameworks like how ReactJs, Angular etc do.
+- Remove the middle man UI designer. Anyone knows how to use java (This statement is made in with my university cs class in mind. Almost everyone knows how to write java applications, but struggle with JS due to a lack of exposure), so why not make the UI in java. Everyone works, everyone wins.
+- Remove templates by having the UI written as classes that represent components. Through Inheritence new components can be created.
+- Minimize the bridge between the backend and the fontend. 
+
 
 
