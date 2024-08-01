@@ -12,6 +12,21 @@ public abstract class GenZElement {
 		return this; 
 	}
 
+	public GenZElement hxTrigger(String trigger) {
+		this.attr("hx-trigger", trigger);
+		return this;
+	}
+
+	public GenZElement hxTarget(String target) {
+		this.attr("hx-target", target);
+		return this;
+	}
+
+	public GenZElement hxSwap(String target) {
+		this.attr("hx-swap", target);
+		return this;
+	}
+
 	public GenZElement hxPost(String path) {
 		this.attr("hx-post", path);
 		return this;
@@ -31,5 +46,6 @@ public abstract class GenZElement {
 		this.attr("class", names);
 		return this;
 	}
+
 	public abstract String render(); 
 }
