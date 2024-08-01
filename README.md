@@ -12,7 +12,7 @@
 - Web UI API
 - Builtin HTMX API
 
-## Exampl
+## Example
 >> You basically create 2 classes. Your program class containing your java entry point. This class registes your Server class.
 `Program.java`
 ```java
