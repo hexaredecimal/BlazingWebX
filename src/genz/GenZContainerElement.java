@@ -38,25 +38,41 @@ public class GenZContainerElement extends GenZElement {
 
 	@Override
 	public GenZContainerElement hxPost(String path) {
-		super.attr("hx-post", path);
+		super.hxPost(path);
 		return this;
 	}
 
 	@Override
 	public GenZContainerElement hxGet(String path) {
-		super.attr("hx-get", path);
+		super.hxGet(path);
+		return this;
+	}
+
+	@Override
+	public GenZContainerElement hxSwap(String target) {
+		super.hxSwap(target);
 		return this;
 	}
 
 	@Override
 	public GenZContainerElement id(String id) {
-		super.attr("id", id);
+		super.id(id);
 		return this;
 	}
 	
+	public GenZContainerElement hxTarget(String target) {
+		super.hxTarget(target);
+		return this;
+	}
+
+	public GenZContainerElement hxTrigger(String trigger) {
+		super.hxTrigger(trigger);
+		return this;
+	}
+
 	@Override
 	public GenZContainerElement className(String names) {
-		super.attr("class", names);
+		super.className(names);
 		return this;
 	}
 
