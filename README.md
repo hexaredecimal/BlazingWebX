@@ -1,7 +1,7 @@
 # JediGenZ
 
 ## About
-> - JediGenZ is a Java library that aims to allows you to build websites and web applications 100% in java, without writing html and javascript directly. This goal is achieved through the use of java classes are combined together to create an elegent user experience while keeping your projects minimal.
+> - JediGenZ is a Java library that aims to allows you to build websites and web applications 100% in java, without writing html and javascript directly. This goal is achieved through the use of java classes which are combined together to create an elegent user experience while keeping your projects minimal.
 > 
 > - JediGenZ also aims to remove the complexity associated with creating well structured and easily maintainable web applications while also minimizing the complexities that rise with complex state management.
 
