@@ -6,10 +6,10 @@
 > - JediGenZ also aims to remove the complexity associated with creating well structured and easily maintainable web applications while also minimizing the complexities that rise with complex state management.
 
 ## Features
-- Web Server API
-- Web UI API
-- Builtin HTMX API
-
+- [X] Web Server API
+- [X] Web UI API (Implements All html5 elements)
+- [X] Builtin HTMX API
+- [ ] SQL intergration
 
 ## Example
 >> You basically create 2 classes. Your program class containing your java entry point. This class registes your Server class.
