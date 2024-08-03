@@ -23,12 +23,12 @@ public class Html extends GenZContainerElement {
 		return this;
 	}
 	
-	public Html addHeaderScript(String url) {
+	public final Html addHeaderScript(String url) {
 		this.top.add(String.format("<script type=\"text/javascript\" src=\"%s\"> </script>", url));
 		return this;
 	}
 
-	public Html addHeaderStyleLink(String url) {
+	public final Html addHeaderStyleLink(String url) {
 		this.top.add(String.format("<link rel=\"stylesheet\" href=\"%s\" />", url));
 		return this;
 	}
@@ -36,22 +36,28 @@ public class Html extends GenZContainerElement {
 	@Override
 	public String render() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("<html>".indent(0));
-		sb.append("<head>".indent(4));
+		sb
+			.append("<!DOCTYPE html>".indent(0))
+			.append("<html>".indent(0))
+			.append("<head>".indent(4));
 
 
 		top.forEach(element -> {
 			sb.append(element.indent(6));
 		});
 
-		sb.append("</head>".indent(4));
-		sb.append(String.format("<body %s>", this.attributes.render()).indent(4));
-		sb.append(super.render().indent(6));
+		sb
+			.append("</head>".indent(4))
+			.append(String.format("<body %s>", this.attributes.render()).indent(4))
+			.append(super.render().indent(6));
+		
 		bottom.forEach(element -> {
 			sb.append(element.indent(6));
 		});
-		sb.append("</body>".indent(4));
-		sb.append("</html>".indent(0));
+		
+		sb
+			.append("</body>".indent(4))
+			.append("</html>".indent(0));
 
 		return sb.toString();
 	}
