@@ -12,6 +12,16 @@ public abstract class GenZElement {
 		return this; 
 	}
 
+	public GenZElement hxVals(String val) {
+		this.attr("hx-vals", val);
+		return this;
+	}
+
+	public GenZElement hxVars(String val) {
+		this.attr("hx-vars", val);
+		return this;
+	}
+
 	public GenZElement hxTrigger(String trigger) {
 		this.attr("hx-trigger", trigger);
 		return this;
