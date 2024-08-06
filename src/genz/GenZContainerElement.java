@@ -14,6 +14,13 @@ public class GenZContainerElement extends GenZElement {
 		this.children = new ArrayList<>();
 	}
 
+	public GenZContainerElement addChildren(GenZElement... children) {
+		for (GenZElement child: children) {
+			this.children.add(child); 
+		}
+		return this; 
+	}
+
 	public GenZContainerElement addChild(GenZElement child) {
 		this.children.add(child); 
 		return this; 
@@ -34,6 +41,19 @@ public class GenZContainerElement extends GenZElement {
 			});
 
 		return sb.toString(); 
+	}
+
+
+	@Override
+	public GenZContainerElement hxVals(String val) {
+		super.hxVals(val);
+		return this;
+	}
+
+	@Override
+	public GenZContainerElement hxVars(String val) {
+		super.hxVars(val);
+		return this;
 	}
 
 	@Override
