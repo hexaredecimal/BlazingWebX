@@ -13,6 +13,6 @@ public class GenZAttribute {
 	}
 
 	public String render() {
-		return String.format("%s=\"%s\"", key, value);
+		return String.format("%s='%s'", key, value);
 	}
 }
