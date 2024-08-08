@@ -124,9 +124,10 @@ public class JediResponse {
 	 */
 	public void sendResponse(String data) {
 		try {
-			exchange.sendResponseHeaders(200, data.length());
+			var bytes = data.getBytes();
+			exchange.sendResponseHeaders(200, bytes.length);
 			OutputStream os = exchange.getResponseBody();
-			os.write(data.getBytes());
+			os.write(bytes);
 			os.close();
 		} catch (IOException ex) {
 			Logger.getLogger(JediResponse.class.getName()).log(Level.SEVERE, null, ex);
