@@ -20,6 +20,23 @@ import java.util.logging.Logger;
  */
 public class Jedi {
 
+	/**
+	 * A simple way of creating and starting a webserver.
+	 * 
+	 *<pre>
+	 * {@code
+	 * 	...
+	 * 	Jedi.createServer(WebServer.class);
+	 * 	...
+	 * }
+	 *</pre>
+	 * 
+	 * The webserver class is expected to be marked with the following: @WebServer and have methods marked with @Route
+	 * @see jedi.WebServer
+	 * @see jedi.Route
+	 * 
+	 * @param root_cls The class which represent the web server.
+	 */
 	public static void createServer(Class<?> root_cls) {
 		if (!root_cls.isAnnotationPresent(WebServer.class)) {
 			System.err.println("Error: Class " + root_cls.getSimpleName() + " is not a webserver. Add `@WebServer` annotation before the class definition");
@@ -55,7 +72,7 @@ public class Jedi {
 							method.getName()
 						);
 						errors.add(msg);
-						
+
 					}
 
 					registerRouteMethod(server, method);
