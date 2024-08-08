@@ -202,5 +202,7 @@ This results in a simple project structure, one with zero configuration outside 
 ## Star history
 [![Star History Chart](https://api.star-history.com/svg?repos=hexaredecimal/JediGenZ&type=Date)](https://star-history.com/#hexaredecimal/JediGenZ&Date)
 
-
+## Reference
+- [htmx](https://htmx.org/)
+- [awesomecss](https://github.com/troxler/awesome-css-frameworks?tab=readme-ov-file)
 
