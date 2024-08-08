@@ -51,12 +51,6 @@ public class GenZContainerElement extends GenZElement {
 	}
 
 	@Override
-	public GenZContainerElement hxVars(String val) {
-		super.hxVars(val);
-		return this;
-	}
-
-	@Override
 	public GenZContainerElement hxPost(String path) {
 		super.hxPost(path);
 		return this;
