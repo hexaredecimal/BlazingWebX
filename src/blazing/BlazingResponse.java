@@ -1,7 +1,7 @@
 package blazing;
 
 import com.sun.net.httpserver.HttpExchange;
-import webx.GenZElement;
+import webx.WebXElement;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -89,7 +89,7 @@ public class BlazingResponse {
 	 *
 	 * @param root The root node of the UI response. 
 	 */
-	public void sendUiRespose(GenZElement root) {
+	public void sendUiRespose(WebXElement root) {
 		this.sendResponse(root.render());
 	}
 
