@@ -1,9 +1,9 @@
-# JediGenZ
+# BlazingWebx
 
 ## About
-> - JediGenZ is a Java library that aims to allows you to build websites and web applications 100% in java, without writing html and javascript directly. This goal is achieved through the use of java classes which are combined together to create an elegent user experience while keeping your projects minimal.
+> - BlazingWebx is a Java library that aims to allows you to build websites and web applications 100% in java, without writing html and javascript directly. This goal is achieved through the use of java classes which are combined together to create an elegent user experience while keeping your projects minimal.
 > 
-> - JediGenZ also aims to remove the complexity associated with creating well structured and easily maintainable web applications while also minimizing the complexities that rise with complex state management.
+> - BlazingWebx also aims to remove the complexity associated with creating well structured and easily maintainable web applications while also minimizing the complexities that rise with complex state management.
 
 ## Features
 - [X] Web Server API
@@ -18,11 +18,11 @@
 ```java
 package example;
 
-import jedi.Jedi;
+import blazing.Blazing;
 
 public class Program {
     public static void main() {
-        Jedi.createServer(HelloWorldServer.class);
+        Blazing.createServer(HelloWorldServer.class);
     }
 }
 ```
@@ -32,15 +32,15 @@ Then follows your server class. The library uses java anotations to find methods
 ```java
 package example;
 
-import jedi.Route;
-import jedi.WebServer;
-import jedi.JediResponse;
+import blazing.Route;
+import blazing.WebServer;
+import blazing.JediResponse;
 import genz.*; 
 
 @WebServer("6900")
 public class HelloWorldServer {
     @Route("/")
-    public static void home(JediResponse reponse) {
+    public static void home(BlazingResponse reponse) {
         var page = new Html()
             .addChild(
                 new Button("Click Me")
@@ -52,7 +52,7 @@ public class HelloWorldServer {
     }
 
     @Route("/hello")
-    public static void hello(JedResponse response) {
+    public static void hello(BlazingResponse response) {
         response.sendUiResponse(new P("Hello, world)); // Send a <p> Hello, world </p>
     } 
 }
@@ -68,15 +68,15 @@ You can extend the builtin library elements to create advanced components. Here 
 ```java
 package clockserver;
 
-import genz.Br;
-import genz.Div;
-import genz.GenZElement;
-import genz.H1;
-import genz.Html;
-import genz.P;
+import webx.Br;
+import webx.Div;
+import webx.GenZElement;
+import webx.H1;
+import webx.Html;
+import webx.P;
 import java.util.Calendar;
 
-public class ClockComponent extends GenZElement {
+public class ClockComponent extends WebXElement {
 	private int hour;
 	private int minute;
 	private int second;
@@ -142,7 +142,7 @@ new Div()
 ...
 
 @Route("/hour")
-public static void hour(JediRespose reponse) {
+public static void hour(BlazingRespose reponse) {
     int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
     response.sendResponse(String.format("%d", hour)); // 
 }
@@ -163,44 +163,11 @@ This results in a simple project structure, one with zero configuration outside 
 - SQL Intergration
 - SQL Data Binding
 - 
-##### API example (THIS DOES NOT EXIST YET)
-```java
-      @DataBind
-      class Person {
-        String name;
-        int age;
-        double height;
-
-        public Person(String name, int age, double height) {
-           this.name = name;
-           this.age = age;
-           this.height = height;
-        }
-      }
-  
-      @WebServer
-      public class Server {
-        private static JediSql connection;
-
-        @Initilializer
-        public static void init() {
-          connection = new JediSqlConnection("sqllite", "Main.db");
-        }
-
-       @Route("/users")
-       public static void users() {
-          JediQueryResult result = connection
-              .select(Query.List("names", "age", "height"))
-              .from("Users")
-              .as(Person.class); 
-       }
-      }
-      
-  ```
+ ```
 
 
 ## Star history
-[![Star History Chart](https://api.star-history.com/svg?repos=hexaredecimal/JediGenZ&type=Date)](https://star-history.com/#hexaredecimal/JediGenZ&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=hexaredecimal/BlazingWebX&type=Date)](https://star-history.com/#hexaredecimal/BlazingWebX&Date)
 
 ## Reference
 - [htmx](https://htmx.org/)
