@@ -13,6 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -22,19 +25,21 @@ public class Blazing {
 
 	/**
 	 * A simple way of creating and starting a webserver.
-	 * 
-	 *<pre>
+	 *
+	 * <pre>
 	 * {@code
- 	...
- 	Blazing.createServer(WebServer.class);
- 	...
- }
-	 *</pre>
-	 * 
-	 * The webserver class is expected to be marked with the following: @WebServer and have methods marked with @Route
+	 * ...
+	 * Blazing.createServer(WebServer.class);
+	 * ...
+	 * }
+	 * </pre>
+	 *
+	 * The webserver class is expected to be marked with the following: @WebServer
+	 * and have methods marked with @Route
+	 *
 	 * @see blazing.WebServer
 	 * @see blazing.Route
-	 * 
+	 *
 	 * @param root_cls The class which represent the web server.
 	 */
 	public static void createServer(Class<?> root_cls) {
@@ -50,48 +55,172 @@ public class Blazing {
 			HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 			var methods = root_cls.getMethods();
 
-			List<String> errors = new ArrayList<>();
-			for (var method : methods) {
-				var isAnnotated = method.isAnnotationPresent(Route.class);
-				var isStatic = Modifier.isStatic(method.getModifiers());
-				var hasOneArg = method.getParameterCount();
-				var paramTypes = method.getParameterTypes();
-				if (isAnnotated && isStatic) {
-					if (hasOneArg != 1) {
-						var msg = String.format(
-							"Error: Method `%s` is expected to have only 1 parameter of type `JediResponse`.",
-							method.getName()
-						);
-						errors.add(msg);
-						break;
+			System.out.println("Searching for @Initializer methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Initializer.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasNoArg = method.getParameterCount() == 0;
+					return isAnnotated && isStatic && hasNoArg;
+				})
+				.map(method -> {
+					System.out.printf("Initializing the server with %s".indent(0), method.getName());
+					try {
+						method.invoke(null);
+					} catch (IllegalAccessException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (InvocationTargetException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					}
+					return method;
+				})
+				.collect(Collectors.toList());
+
+			System.out.println("Searching for @Route methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Route.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasOneArg = method.getParameterCount() == 1;
+					var paramTypes = method.getParameterTypes();
+					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
+				}).map(method -> {
+				String path = method.getAnnotation(Route.class).value();
+				System.out.printf("Registered a route using @Route(`%s`)\n", path);
+				server.createContext(path, (HttpExchange he) -> {
+					var response = new BlazingResponse(he);
+					try {
+						method.invoke(null, response);
+					} catch (IllegalAccessException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (InvocationTargetException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				});
+				return method;
+			}).collect(Collectors.toList());
+
+			System.out.println("Searching for @Post methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Post.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasOneArg = method.getParameterCount() == 1;
+					var paramTypes = method.getParameterTypes();
+					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
+				}).map(method -> {
+				String type = "POST";
+				String path = method.getAnnotation(Post.class).value();
+				System.out.printf("Registered a %s route @Post(`%s`)\n", type.toLowerCase(), path);
+				server.createContext(path, (HttpExchange he) -> {
+					String requestMethod = he.getRequestMethod();
+					if (!requestMethod.equals(type)) {
+						return;
 					}
 
-					if (!paramTypes[0].getName().equals(BlazingResponse.class.getName())) {
-						var msg = String.format(
-							"Error: Method `%s` has 1 parameter as expected but its not of type `JediResponse`.",
-							method.getName()
-						);
-						errors.add(msg);
+					var response = new BlazingResponse(he);
+					try {
+						method.invoke(null, response);
+					} catch (IllegalAccessException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (InvocationTargetException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				});
+				return method;
+			}).collect(Collectors.toList());
 
+			System.out.println("Searching for @Put methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Put.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasOneArg = method.getParameterCount() == 1;
+					var paramTypes = method.getParameterTypes();
+					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
+				}).map(method -> {
+				String type = "PUT";
+				String path = method.getAnnotation(Put.class).value();
+				System.out.printf("Registered a %s route @Put(`%s`)\n", type.toLowerCase(), path);
+				server.createContext(path, (HttpExchange he) -> {
+					String requestMethod = he.getRequestMethod();
+					if (!requestMethod.equals(type)) {
+						return;
 					}
 
-					registerRouteMethod(server, method);
-				} else if (isAnnotated && !isStatic) {
-					var msg = String.format(
-						"Error: Method `%s` is annotated as a Route but not defined as static. Define the method as static.",
-						method.getName()
-					);
-					errors.add(msg);
-				}
-			}
+					var response = new BlazingResponse(he);
+					try {
+						method.invoke(null, response);
+					} catch (IllegalAccessException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (InvocationTargetException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				});
+				return method;
+			}).collect(Collectors.toList());
 
-			if (!errors.isEmpty()) {
-				for (String error : errors) {
-					System.err.println(error);
-				}
-				System.exit(1);
-				return;
-			}
+			System.out.println("Searching for @Get methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Get.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasOneArg = method.getParameterCount() == 1;
+					var paramTypes = method.getParameterTypes();
+					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
+				}).map(method -> {
+				String type = "GET";
+				String path = method.getAnnotation(Get.class).value();
+				System.out.printf("Registered a %s route @Get(`%s`)\n", type.toLowerCase(), path);
+				server.createContext(path, (HttpExchange he) -> {
+					String requestMethod = he.getRequestMethod();
+					if (!requestMethod.equals(type)) {
+						return;
+					}
+
+					var response = new BlazingResponse(he);
+					try {
+						method.invoke(null, response);
+					} catch (IllegalAccessException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (InvocationTargetException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				});
+				return method;
+			}).collect(Collectors.toList());
+
+			System.out.println("Searching for @Delete methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Delete.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasOneArg = method.getParameterCount() == 1;
+					var paramTypes = method.getParameterTypes();
+					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
+				}).map(method -> {
+				String type = "DELETE";
+				String path = method.getAnnotation(Delete.class).value();
+				System.out.printf("Registered a %s route @Post(`%s`)\n", type.toLowerCase(), path);
+				server.createContext(path, (HttpExchange he) -> {
+					String requestMethod = he.getRequestMethod();
+					if (!requestMethod.equals(type)) {
+						return;
+					}
+
+					var response = new BlazingResponse(he);
+					try {
+						method.invoke(null, response);
+					} catch (IllegalAccessException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (InvocationTargetException ex) {
+						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				});
+				return method;
+			}).collect(Collectors.toList());
+
+			System.out.println("Done initializing server\n");
 
 			server.setExecutor(null); // Use the default executor
 			System.out.println("Starting server :)");
@@ -102,18 +231,4 @@ public class Blazing {
 		}
 	}
 
-	private static void registerRouteMethod(HttpServer server, Method method) {
-		String path = method.getAnnotation(Route.class).value();
-		System.out.printf("Registered a route @ `%s`\n", path);
-		server.createContext(path, (HttpExchange he) -> {
-			var response = new BlazingResponse(he);
-			try {
-				method.invoke(null, response);
-			} catch (IllegalAccessException ex) {
-				Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-			} catch (InvocationTargetException ex) {
-				Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		});
-	}
 }
