@@ -162,8 +162,6 @@ This results in a simple project structure, one with zero configuration outside 
 - Server initialization Anotation `@Initializer` which will allow any method in the server taged with it to run before the server starts
 - SQL Intergration
 - SQL Data Binding
-- 
- ```
 
 
 ## Star history
