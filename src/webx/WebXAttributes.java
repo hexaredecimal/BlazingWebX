@@ -8,10 +8,10 @@ import java.util.List;
  * 
  * @author hexaredecimal
  */
-public class GenZAttributes {
-	private final List<GenZAttribute> attributes; 
+public class WebXAttributes {
+	private final List<WebXAttribute> attributes; 
 
-	public GenZAttributes() {
+	public WebXAttributes() {
 		this.attributes = new ArrayList<>();
 	}
 
@@ -22,8 +22,8 @@ public class GenZAttributes {
 	 * @param value The value of the attribute
 	 * @return A modified list of attributes
 	 */
-	public GenZAttributes addAttribute(String key, String value) {
-		this.attributes.add(new GenZAttribute(key, value)); 
+	public WebXAttributes addAttribute(String key, String value) {
+		this.attributes.add(new WebXAttribute(key, value)); 
 		return this; 
 	}
 
@@ -33,7 +33,7 @@ public class GenZAttributes {
 	 * @param attribute
 	 * @return 
 	 */
-	public GenZAttributes addAttribute(GenZAttribute attribute) {
+	public WebXAttributes addAttribute(WebXAttribute attribute) {
 		this.attributes.add(attribute); 
 		return this;
 	}
@@ -53,11 +53,11 @@ public class GenZAttributes {
 		return sb.toString();
 	}
 
-	public GenZAttribute getFirst() { return this.attributes.getFirst(); }
-	public GenZAttribute getLast() { return this.attributes.getLast(); }
+	public WebXAttribute getFirst() { return this.attributes.getFirst(); }
+	public WebXAttribute getLast() { return this.attributes.getLast(); }
 	
-	public GenZAttributes getSlice(int start, int end) {
-		GenZAttributes self = new GenZAttributes(); 
+	public WebXAttributes getSlice(int start, int end) {
+		WebXAttributes self = new WebXAttributes(); 
 		if (start >= 0 && end < self.attributes.size()) {
 			for (int i = start; i < end; i++) {
 				self.addAttribute(attributes.get(i));
@@ -66,8 +66,8 @@ public class GenZAttributes {
 		return self;
 	}
 
-	public GenZAttributes getSlice(int end) {
-		GenZAttributes self = new GenZAttributes(); 
+	public WebXAttributes getSlice(int end) {
+		WebXAttributes self = new WebXAttributes(); 
 		if (end < self.attributes.size()) {
 			for (int i = 0; i < end; i++) {
 				self.addAttribute(attributes.get(i));

@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class U extends GenZContainerElement {
+public class U extends WebXContainerElement {
 	protected String innerText; 
 
 	public U() {

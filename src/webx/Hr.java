@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Hr extends GenZElement {
+public class Hr extends WebXElement {
 
 	@Override
 	public String render() {

@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Img extends GenZElement {
+public class Img extends WebXElement {
 	private String path, alt; 
 
 	public Img() {

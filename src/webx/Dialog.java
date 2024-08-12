@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Dialog extends GenZContainerElement {
+public class Dialog extends WebXContainerElement {
 	private boolean open; 
 	
 	public Dialog() {

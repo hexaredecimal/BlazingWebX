@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class BlockQuote extends GenZContainerElement {
+public class BlockQuote extends WebXContainerElement {
 	
 	public BlockQuote cite(String url) {
 		this.attributes.addAttribute("cite", url);

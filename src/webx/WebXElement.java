@@ -5,9 +5,9 @@ package webx;
  *
  * @author hexaredecimal
  */
-public abstract class GenZElement {
+public abstract class WebXElement {
 
-	protected GenZAttributes attributes = new GenZAttributes();
+	protected WebXAttributes attributes = new WebXAttributes();
 
 	/**
 	 * Adds an attribute to the element
@@ -16,7 +16,7 @@ public abstract class GenZElement {
 	 * @param value
 	 * @return A modified element
 	 */
-	public GenZElement attr(String key, String value) {
+	public WebXElement attr(String key, String value) {
 		this.attributes.addAttribute(key, value);
 		return this;
 	}
@@ -39,7 +39,7 @@ public abstract class GenZElement {
 	 * @param val
 	 * @return A modified element
 	 */
-	public GenZElement hxVals(String val) {
+	public WebXElement hxVals(String val) {
 		this.attr("hx-vals", val);
 		return this;
 	}
@@ -61,7 +61,7 @@ public abstract class GenZElement {
 	 * @param trigger
 	 * @return
 	 */
-	public GenZElement hxTrigger(String trigger) {
+	public WebXElement hxTrigger(String trigger) {
 		this.attr("hx-trigger", trigger);
 		return this;
 	}
@@ -83,7 +83,7 @@ public abstract class GenZElement {
 	 * @param trigger
 	 * @return
 	 */
-	public GenZElement hxTarget(String target) {
+	public WebXElement hxTarget(String target) {
 		this.attr("hx-target", target);
 		return this;
 	}
@@ -106,27 +106,27 @@ public abstract class GenZElement {
 	 * @param trigger
 	 * @return
 	 */
-	public GenZElement hxSwap(String target) {
+	public WebXElement hxSwap(String target) {
 		this.attr("hx-swap", target);
 		return this;
 	}
 
-	public GenZElement hxPost(String path) {
+	public WebXElement hxPost(String path) {
 		this.attr("hx-post", path);
 		return this;
 	}
 
-	public GenZElement hxGet(String path) {
+	public WebXElement hxGet(String path) {
 		this.attr("hx-get", path);
 		return this;
 	}
 
-	public GenZElement id(String id) {
+	public WebXElement id(String id) {
 		this.attr("id", id);
 		return this;
 	}
 
-	public GenZElement className(String names) {
+	public WebXElement className(String names) {
 		this.attr("class", names);
 		return this;
 	}

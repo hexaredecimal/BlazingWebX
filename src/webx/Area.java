@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Area extends GenZElement {
+public class Area extends WebXElement {
 
 	public Area() {
 	}

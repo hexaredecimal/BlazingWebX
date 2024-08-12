@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Bdo extends GenZContainerElement {
+public class Bdo extends WebXContainerElement {
 	protected String innerText; 
 
 	public Bdo() {

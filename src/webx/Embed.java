@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Embed extends GenZElement {
+public class Embed extends WebXElement {
 	private String path, type; 
 
 	public Embed() {

@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Audio extends GenZContainerElement {
+public class Audio extends WebXContainerElement {
 
 	private boolean controls, autoplay, loop, muted;
 	private String src;

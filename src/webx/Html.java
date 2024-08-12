@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author hexaredecimal
  */
-public class Html extends GenZContainerElement {
+public class Html extends WebXContainerElement {
 
 	private List<String> top;
 	private List<String> bottom;

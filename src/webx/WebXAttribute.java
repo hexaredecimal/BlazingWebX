@@ -13,7 +13,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class GenZAttribute {
+public class WebXAttribute {
 	private final String key, value;
 
 	/**
@@ -30,7 +30,7 @@ public class GenZAttribute {
 	 * @param key Left side of the attribute, represents the data name
 	 * @param value Right side of the attribute, represents the value for the data
 	 */
-	public GenZAttribute(String key, String value) {
+	public WebXAttribute(String key, String value) {
 		this.key = key;
 		this.value = value;
 	}

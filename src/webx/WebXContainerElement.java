@@ -7,27 +7,27 @@ import java.util.List;
  *
  * @author hexaredecimal
  */
-public class GenZContainerElement extends GenZElement {
-	protected List<GenZElement> children; 
+public class WebXContainerElement extends WebXElement {
+	protected List<WebXElement> children; 
 	
-	public GenZContainerElement() {
+	public WebXContainerElement() {
 		this.children = new ArrayList<>();
 	}
 
-	public GenZContainerElement addChildren(GenZElement... children) {
-		for (GenZElement child: children) {
+	public WebXContainerElement addChildren(WebXElement... children) {
+		for (WebXElement child: children) {
 			this.children.add(child); 
 		}
 		return this; 
 	}
 
-	public GenZContainerElement addChild(GenZElement child) {
+	public WebXContainerElement addChild(WebXElement child) {
 		this.children.add(child); 
 		return this; 
 	}
 
 	@Override
-	public GenZContainerElement attr(String key, String value) {
+	public WebXContainerElement attr(String key, String value) {
 		super.attr(key, value);
 		return this; 
 	}
@@ -45,47 +45,47 @@ public class GenZContainerElement extends GenZElement {
 
 
 	@Override
-	public GenZContainerElement hxVals(String val) {
+	public WebXContainerElement hxVals(String val) {
 		super.hxVals(val);
 		return this;
 	}
 
 	@Override
-	public GenZContainerElement hxPost(String path) {
+	public WebXContainerElement hxPost(String path) {
 		super.hxPost(path);
 		return this;
 	}
 
 	@Override
-	public GenZContainerElement hxGet(String path) {
+	public WebXContainerElement hxGet(String path) {
 		super.hxGet(path);
 		return this;
 	}
 
 	@Override
-	public GenZContainerElement hxSwap(String target) {
+	public WebXContainerElement hxSwap(String target) {
 		super.hxSwap(target);
 		return this;
 	}
 
 	@Override
-	public GenZContainerElement id(String id) {
+	public WebXContainerElement id(String id) {
 		super.id(id);
 		return this;
 	}
 	
-	public GenZContainerElement hxTarget(String target) {
+	public WebXContainerElement hxTarget(String target) {
 		super.hxTarget(target);
 		return this;
 	}
 
-	public GenZContainerElement hxTrigger(String trigger) {
+	public WebXContainerElement hxTrigger(String trigger) {
 		super.hxTrigger(trigger);
 		return this;
 	}
 
 	@Override
-	public GenZContainerElement className(String names) {
+	public WebXContainerElement className(String names) {
 		super.className(names);
 		return this;
 	}

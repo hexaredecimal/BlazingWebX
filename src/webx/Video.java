@@ -4,7 +4,7 @@ package webx;
  *
  * @author hexaredecimal
  */
-public class Video extends GenZContainerElement {
+public class Video extends WebXContainerElement {
 
 	private boolean controls, autoplay, loop, muted;
 	private String src;
