@@ -5,6 +5,7 @@ import webx.WebXElement;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -45,6 +46,10 @@ public class BlazingResponse {
 			this.params = parseQuery(body);
 		} catch (IOException ex) {
 		}
+	}
+
+	public URI getRequestURI() {
+		return this.exchange.getRequestURI();
 	}
 
 	/**
