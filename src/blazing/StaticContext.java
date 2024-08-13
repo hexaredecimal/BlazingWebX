@@ -15,7 +15,7 @@ import java.io.OutputStream;
  *
  * @author hexaredecimal
  */
-public class StaticContext implements HttpHandler  {
+class StaticContext implements HttpHandler  {
 	private final String baseDir;
 
 	public StaticContext(String baseDir) {

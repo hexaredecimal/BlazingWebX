@@ -7,16 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used to mark classes that represent static content. 
- * <pre>
- * {@code
- * 	@Static("images")
- * 	public class WebServer {
- * 		...
- * 	}
- * }
- * </pre>
- * 
+ * This annotation is used to hold static annotated data. 
  * @author hexaredecimal
  */
 @Target(ElementType.TYPE)
