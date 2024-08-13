@@ -53,6 +53,16 @@ public class Blazing {
 		int port = Integer.parseInt(_port);
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+
+			if (root_cls.isAnnotationPresent(StaticMarks.class)){
+				var annotations = root_cls.getAnnotationsByType(Static.class);
+				for (var annotation: annotations) {
+					String static_path = annotation.value(); 
+					System.out.println("Registering static context path " + static_path);
+					server.createContext(static_path, new StaticContext(static_path.replace('/', ' ').trim()));
+				}
+			}
+			
 			var methods = root_cls.getMethods();
 
 			System.out.println("Searching for @Initializer methods");
