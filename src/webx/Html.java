@@ -48,7 +48,7 @@ public class Html extends WebXContainerElement {
 
 		sb
 			.append("</head>".indent(4))
-			.append(String.format("<body %s>", this.attributes.render()).indent(4))
+			.append(String.format("<body %s>", this.attributes.render()))
 			.append(super.render().indent(6));
 		
 		bottom.forEach(element -> {
