@@ -27,4 +27,9 @@ public class FileSystem {
 			return ex.getMessage();
 		}
 	}
+
+	public static String fileExtension(String path) {
+		int lastDot = path.lastIndexOf('.');
+		return lastDot == -1 ? null: path.substring(lastDot + 1);
+	}
 }
