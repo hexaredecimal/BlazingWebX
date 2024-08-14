@@ -15,6 +15,7 @@ public class Html extends WebXContainerElement {
 	public Html() {
 		this.top = new ArrayList<>();
 		this.bottom = new ArrayList<>();
+		this.top.add("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
 		this.addHeaderScript("https://unpkg.com/htmx.org@2.0.1");
 	}
 
