@@ -11,7 +11,9 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Formatter;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -44,7 +46,10 @@ public class Blazing {
 	 */
 	public static void createServer(Class<?> root_cls) {
 		if (!root_cls.isAnnotationPresent(WebServer.class)) {
-			System.err.println("Error: Class " + root_cls.getSimpleName() + " is not a webserver. Add `@WebServer` annotation before the class definition");
+			BlazingLog.severe(
+				String.format("Error: Class `%s` is not a webserver. Add `@WebServer` annotation before the class definition",
+				root_cls.getSimpleName())
+			);
 			System.exit(1);
 			return;
 		}
@@ -54,18 +59,18 @@ public class Blazing {
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
-			if (root_cls.isAnnotationPresent(StaticMarks.class)){
+			if (root_cls.isAnnotationPresent(StaticMarks.class)) {
 				var annotations = root_cls.getAnnotationsByType(Static.class);
-				for (var annotation: annotations) {
-					String static_path = annotation.value(); 
-					System.out.println("Registering static context path " + static_path);
+				for (var annotation : annotations) {
+					String static_path = annotation.value();
+					BlazingLog.info(String.format("Registering static context path %s", static_path));
 					server.createContext(static_path, new StaticContext(static_path.replace('/', ' ').trim()));
 				}
 			}
-			
+
 			var methods = root_cls.getMethods();
 
-			System.out.println("Searching for @Initializer methods");
+			BlazingLog.info("Searching for @Initializer methods");
 			Stream.of(methods)
 				.filter(method -> {
 					var isAnnotated = method.isAnnotationPresent(Initializer.class);
@@ -74,19 +79,17 @@ public class Blazing {
 					return isAnnotated && isStatic && hasNoArg;
 				})
 				.map(method -> {
-					System.out.printf("Initializing the server with %s".indent(0), method.getName());
+					BlazingLog.info(String.format("Initializing the server with %s".indent(0), method.getName()));
 					try {
 						method.invoke(null);
-					} catch (IllegalAccessException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (InvocationTargetException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
 					}
 					return method;
 				})
 				.collect(Collectors.toList());
 
-			System.out.println("Searching for @Route methods");
+			BlazingLog.info("Searching for @Route methods");
 			Stream.of(methods)
 				.filter(method -> {
 					var isAnnotated = method.isAnnotationPresent(Route.class);
@@ -96,21 +99,19 @@ public class Blazing {
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
 				}).map(method -> {
 				String path = method.getAnnotation(Route.class).value();
-				System.out.printf("Registered a route using @Route(`%s`)\n", path);
+				BlazingLog.info(String.format("Registered a route using @Route(`%s`)", path));
 				server.createContext(path, (HttpExchange he) -> {
 					var response = new BlazingResponse(he);
 					try {
 						method.invoke(null, response);
-					} catch (IllegalAccessException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (InvocationTargetException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
 					}
 				});
 				return method;
 			}).collect(Collectors.toList());
 
-			System.out.println("Searching for @Post methods");
+			BlazingLog.info("Searching for @Post methods");
 			Stream.of(methods)
 				.filter(method -> {
 					var isAnnotated = method.isAnnotationPresent(Post.class);
@@ -121,7 +122,7 @@ public class Blazing {
 				}).map(method -> {
 				String type = "POST";
 				String path = method.getAnnotation(Post.class).value();
-				System.out.printf("Registered a %s route @Post(`%s`)\n", type.toLowerCase(), path);
+				BlazingLog.info(String.format("Registered a %s route @Post(`%s`)\n", type.toLowerCase(), path));
 				server.createContext(path, (HttpExchange he) -> {
 					String requestMethod = he.getRequestMethod();
 					if (!requestMethod.equals(type)) {
@@ -131,16 +132,14 @@ public class Blazing {
 					var response = new BlazingResponse(he);
 					try {
 						method.invoke(null, response);
-					} catch (IllegalAccessException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (InvocationTargetException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
 					}
 				});
 				return method;
 			}).collect(Collectors.toList());
 
-			System.out.println("Searching for @Put methods");
+			BlazingLog.info("Searching for @Put methods");
 			Stream.of(methods)
 				.filter(method -> {
 					var isAnnotated = method.isAnnotationPresent(Put.class);
@@ -151,7 +150,7 @@ public class Blazing {
 				}).map(method -> {
 				String type = "PUT";
 				String path = method.getAnnotation(Put.class).value();
-				System.out.printf("Registered a %s route @Put(`%s`)\n", type.toLowerCase(), path);
+				BlazingLog.info(String.format("Registered a %s route @Put(`%s`)", type.toLowerCase(), path));
 				server.createContext(path, (HttpExchange he) -> {
 					String requestMethod = he.getRequestMethod();
 					if (!requestMethod.equals(type)) {
@@ -161,16 +160,14 @@ public class Blazing {
 					var response = new BlazingResponse(he);
 					try {
 						method.invoke(null, response);
-					} catch (IllegalAccessException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (InvocationTargetException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
 					}
 				});
 				return method;
 			}).collect(Collectors.toList());
 
-			System.out.println("Searching for @Get methods");
+			BlazingLog.info("Searching for @Get methods");
 			Stream.of(methods)
 				.filter(method -> {
 					var isAnnotated = method.isAnnotationPresent(Get.class);
@@ -181,7 +178,7 @@ public class Blazing {
 				}).map(method -> {
 				String type = "GET";
 				String path = method.getAnnotation(Get.class).value();
-				System.out.printf("Registered a %s route @Get(`%s`)\n", type.toLowerCase(), path);
+				BlazingLog.info(String.format("Registered a %s route @Get(`%s`)", type.toLowerCase(), path));
 				server.createContext(path, (HttpExchange he) -> {
 					String requestMethod = he.getRequestMethod();
 					if (!requestMethod.equals(type)) {
@@ -191,16 +188,14 @@ public class Blazing {
 					var response = new BlazingResponse(he);
 					try {
 						method.invoke(null, response);
-					} catch (IllegalAccessException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (InvocationTargetException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
 					}
 				});
 				return method;
 			}).collect(Collectors.toList());
 
-			System.out.println("Searching for @Delete methods");
+			BlazingLog.info("Searching for @Delete methods");
 			Stream.of(methods)
 				.filter(method -> {
 					var isAnnotated = method.isAnnotationPresent(Delete.class);
@@ -211,7 +206,7 @@ public class Blazing {
 				}).map(method -> {
 				String type = "DELETE";
 				String path = method.getAnnotation(Delete.class).value();
-				System.out.printf("Registered a %s route @Post(`%s`)\n", type.toLowerCase(), path);
+				BlazingLog.info(String.format("Registered a %s route @Post(`%s`)", type.toLowerCase(), path));
 				server.createContext(path, (HttpExchange he) -> {
 					String requestMethod = he.getRequestMethod();
 					if (!requestMethod.equals(type)) {
@@ -221,23 +216,21 @@ public class Blazing {
 					var response = new BlazingResponse(he);
 					try {
 						method.invoke(null, response);
-					} catch (IllegalAccessException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (InvocationTargetException ex) {
-						Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
 					}
 				});
 				return method;
 			}).collect(Collectors.toList());
 
-			System.out.println("Done initializing server\n");
+			BlazingLog.info("Done initializing server\n");
 
 			server.setExecutor(null); // Use the default executor
-			System.out.println("Starting server :)");
+			BlazingLog.info("Starting server :)");
 			server.start();
-			System.out.printf("Server is running at: localhost:%d\n", port);
+			BlazingLog.info(String.format("Server is running at: localhost:%d", port));
 		} catch (IOException ex) {
-			Logger.getLogger(Blazing.class.getName()).log(Level.SEVERE, null, ex);
+			BlazingLog.severe(ex.toString());
 		}
 	}
 
