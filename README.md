@@ -50,7 +50,7 @@ public class HelloWorldServer {
       // NOTE: Space for loading/connecting server resources such as databased. 
     }
     
-    @Route("/")
+    @Get("/")
     public static void home(BlazingResponse reponse) {
         var page = new Html()
             .addChild(
@@ -62,7 +62,7 @@ public class HelloWorldServer {
         response.sendUiResponse(page);
     }
 
-    @Route("/hello")
+    @Post("/hello")
     public static void hello(BlazingResponse response) {
         response.sendUiResponse(new P("Hello, world)); // Send a <p> Hello, world </p>
     } 
