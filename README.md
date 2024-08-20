@@ -12,6 +12,8 @@
 - [X] Static content Server
 - [X] Support for most used HTTP methods
 - [ ] SQL intergration
+- [ ] SQL Integration
+- [ ] SQL Data Binding
 
 ## Example
 >> You basically create 2 classes. Your program class containing your java entry point. This class registers your Server class.
@@ -37,7 +39,7 @@ package example;
 import blazing.Route;
 import blazing.WebServer;
 import blazing.JediResponse;
-import genz.*; 
+import webx.*; 
 
 @WebServer("6900")
 @Static("/images")
@@ -150,14 +152,18 @@ This allows you to create complex components that abstract away their implementa
 This results in a simple project structure, one with zero configuration outside of adding BlazingWebx to your build system as a dependency.  
 
 ## Why
-- Remove the complexity associated with creating web applicationss.
-- Allow for reuse of tools and knowledge, hence not making tertiary education completely useless by imposing weird industry standards for frameworks like how ReactJs, Angular etc do.
+- Remove the complexity associated with creating web applications.
 - Remove templates by having the UI written as classes that represent components. Through inheritance new components can be created.
 - Minimize the bridge between the backend and the frontend.
 
-## Todo
-- SQL Integration
-- SQL Data Binding
+## Requirements
+- Java 21 or greater
+- Your favourite IDE/TextEditor
+
+
+## Download
+- [latest](https://github.com/hexaredecimal/BlazingWebX/releases)
+- [documentation](https://blazingwebx.onrender.com/javadoc/index.html)
 
 
 ## Star history
