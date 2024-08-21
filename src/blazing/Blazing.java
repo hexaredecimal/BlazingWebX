@@ -48,7 +48,7 @@ public class Blazing {
 		if (!root_cls.isAnnotationPresent(WebServer.class)) {
 			BlazingLog.severe(
 				String.format("Error: Class `%s` is not a webserver. Add `@WebServer` annotation before the class definition",
-				root_cls.getSimpleName())
+					root_cls.getSimpleName())
 			);
 			System.exit(1);
 			return;
@@ -59,13 +59,12 @@ public class Blazing {
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
-			if (root_cls.isAnnotationPresent(StaticMarks.class)) {
-				var annotations = root_cls.getAnnotationsByType(Static.class);
-				for (var annotation : annotations) {
-					String static_path = annotation.value();
-					BlazingLog.info(String.format("Registering static context path %s", static_path));
-					server.createContext(static_path, new StaticContext(static_path.replace('/', ' ').trim()));
-				}
+			var annotations = root_cls.getAnnotationsByType(Static.class);
+			for (var annotation : annotations) {
+				String static_path = annotation.value();
+				BlazingLog.info(String.format("Registering static context path %s", static_path));
+				String clean_path = static_path.replaceFirst("/", "");
+				server.createContext(static_path, new StaticContext(clean_path.trim()));
 			}
 
 			var methods = root_cls.getMethods();
