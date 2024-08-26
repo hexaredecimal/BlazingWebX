@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import jdk.jfr.Description;
 
 /**
  *
@@ -82,11 +83,11 @@ public class Blazing {
 					try {
 						method.invoke(null);
 					} catch (IllegalAccessException | InvocationTargetException ex) {
-						BlazingLog.severe(ex.toString());
+						Throwable cause = ex.getCause();
+						BlazingLog.severe(cause.toString());
 					}
 					return method;
-				})
-				.collect(Collectors.toList());
+				});
 
 			BlazingLog.info("Searching for @Route methods");
 			Stream.of(methods)
@@ -108,7 +109,7 @@ public class Blazing {
 					}
 				});
 				return method;
-			}).collect(Collectors.toList());
+			});
 
 			BlazingLog.info("Searching for @Post methods");
 			Stream.of(methods)
@@ -136,7 +137,7 @@ public class Blazing {
 					}
 				});
 				return method;
-			}).collect(Collectors.toList());
+			});
 
 			BlazingLog.info("Searching for @Put methods");
 			Stream.of(methods)
@@ -164,7 +165,7 @@ public class Blazing {
 					}
 				});
 				return method;
-			}).collect(Collectors.toList());
+			});
 
 			BlazingLog.info("Searching for @Get methods");
 			Stream.of(methods)
@@ -192,7 +193,7 @@ public class Blazing {
 					}
 				});
 				return method;
-			}).collect(Collectors.toList());
+			});
 
 			BlazingLog.info("Searching for @Delete methods");
 			Stream.of(methods)
@@ -220,8 +221,36 @@ public class Blazing {
 					}
 				});
 				return method;
-			}).collect(Collectors.toList());
+			});
 
+			var shutdownListener = new Thread() {
+				public void run() {
+					BlazingLog.info("Searching for @Destructor methods");
+					Stream.of(methods)
+						.filter(method -> {
+							var isAnnotated = method.isAnnotationPresent(Destructor.class);
+							var isStatic = Modifier.isStatic(method.getModifiers());
+							var hasNoArg = method.getParameterCount() == 0;
+							return isAnnotated && isStatic && hasNoArg;
+						})
+						.map(method -> {
+							BlazingLog.info(String.format("Calling De-initializer named: %s".indent(0), method.getName()));
+							try {
+								method.invoke(null);
+							} catch (IllegalAccessException | InvocationTargetException ex) {
+								Throwable cause = ex.getCause();
+								BlazingLog.severe(cause.toString());
+							}
+							return method;
+						});
+
+					BlazingLog.info("Stopping server server :)");
+					server.stop(0);
+				}
+			};
+			Runtime.getRuntime().addShutdownHook(shutdownListener);
+
+			BlazingLog.info(shutdownListener + "");
 			BlazingLog.info("Done initializing server\n");
 
 			server.setExecutor(null); // Use the default executor
