@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * 
  * <pre>
  * {@code
- * 	@Initializer("/users")
+ * 	@Initializer
  * 	public static void init() {
  * 		...
  * 	}
