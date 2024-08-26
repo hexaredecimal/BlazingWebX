@@ -87,7 +87,8 @@ public class Blazing {
 						BlazingLog.severe(cause.toString());
 					}
 					return method;
-				});
+				})
+				.collect(Collectors.toList());
 
 			BlazingLog.info("Searching for @Route methods");
 			Stream.of(methods)
@@ -109,7 +110,9 @@ public class Blazing {
 					}
 				});
 				return method;
-			});
+			})
+				.collect(Collectors.toList());
+			;
 
 			BlazingLog.info("Searching for @Post methods");
 			Stream.of(methods)
@@ -137,7 +140,9 @@ public class Blazing {
 					}
 				});
 				return method;
-			});
+			})
+				.collect(Collectors.toList());
+			;
 
 			BlazingLog.info("Searching for @Put methods");
 			Stream.of(methods)
@@ -165,7 +170,9 @@ public class Blazing {
 					}
 				});
 				return method;
-			});
+			})
+				.collect(Collectors.toList());
+			;
 
 			BlazingLog.info("Searching for @Get methods");
 			Stream.of(methods)
@@ -193,7 +200,8 @@ public class Blazing {
 					}
 				});
 				return method;
-			});
+			})
+				.collect(Collectors.toList());
 
 			BlazingLog.info("Searching for @Delete methods");
 			Stream.of(methods)
@@ -221,7 +229,8 @@ public class Blazing {
 					}
 				});
 				return method;
-			});
+			})
+				.collect(Collectors.toList());
 
 			var shutdownListener = new Thread() {
 				public void run() {
@@ -242,7 +251,8 @@ public class Blazing {
 								BlazingLog.severe(cause.toString());
 							}
 							return method;
-						});
+						})
+						.collect(Collectors.toList());
 
 					BlazingLog.info("Stopping server server :)");
 					server.stop(0);
@@ -250,7 +260,6 @@ public class Blazing {
 			};
 			Runtime.getRuntime().addShutdownHook(shutdownListener);
 
-			BlazingLog.info(shutdownListener + "");
 			BlazingLog.info("Done initializing server\n");
 
 			server.setExecutor(null); // Use the default executor
