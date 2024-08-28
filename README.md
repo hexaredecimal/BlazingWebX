@@ -47,7 +47,12 @@ public class HelloWorldServer {
     
     @Initializer
     public static void init() {
-      // NOTE: Space for loading/connecting server resources such as databased. 
+      // NOTE: Space for loading/connecting server resources such as a database. 
+    }
+
+    @Destructor
+    public static void deinit() {
+      // NOTE: Close the db connections
     }
     
     @Get("/")
