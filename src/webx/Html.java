@@ -23,6 +23,11 @@ public class Html extends WebXContainerElement {
 		this.top.add(String.format("<title>%s</title>", title));
 		return this;
 	}
+
+	public Html favicon(String path) {
+		this.top.add(String.format("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">", path));
+		return this;
+	}
 	
 	public final Html addHeaderScript(String url) {
 		this.top.add(String.format("<script type=\"text/javascript\" src=\"%s\"> </script>", url));
