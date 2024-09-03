@@ -1,4 +1,14 @@
-# BlazingWebx
+```
+ ██████╗██╗     █████╗████████████╗   ██╗██████╗██╗    ███████████████╗██╗  ██╗
+  ██╔══████║    ██╔══██╚══███╔██████╗  ████╔════╝██║    ████╔════██╔══██╚██╗██╔╝
+  ██████╔██║    ███████║ ███╔╝████╔██╗ ████║  █████║ █╗ ███████╗ ██████╔╝╚███╔╝
+  ██╔══████║    ██╔══██║███╔╝ ████║╚██╗████║   ████║███╗████╔══╝ ██╔══██╗██╔██╗
+  ██████╔█████████║  █████████████║ ╚████╚██████╔╚███╔███╔█████████████╔██╔╝ ██╗
+  ╚═════╝╚══════╚═╝  ╚═╚══════╚═╚═╝  ╚═══╝╚═════╝ ╚══╝╚══╝╚══════╚═════╝╚═╝  ╚═╝
+                                        
+                https://github.com/hexaredecimal/BlazingWebX
+                        https://blazingwebx.onrender.com
+```
 
 ## About
 > - BlazingWebx is a Java library that aims to allows you to build single page web applications (SPAs) 100% in Java, without writing html and JavaScript directly. This goal is achieved through the use of Java classes which are combined together to create an elegant user experience leveraging HTMX for client and server communication while keeping your projects minimal.
