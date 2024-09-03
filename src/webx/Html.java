@@ -15,27 +15,57 @@ public class Html extends WebXContainerElement {
 	public Html() {
 		this.top = new ArrayList<>();
 		this.bottom = new ArrayList<>();
-		this.top.add("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+		this.addHeaderChildren(
+			new Meta()
+				.attr("name", "viewport")
+				.attr("content", "width=device-width, initial-scale=1.0")
+		);
 		this.addHeaderScript("https://unpkg.com/htmx.org@2.0.1");
 	}
 
-	public Html title(String title) {
+	public final Html title(String title) {
 		this.top.add(String.format("<title>%s</title>", title));
 		return this;
 	}
 
-	public Html favicon(String path) {
-		this.top.add(String.format("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">", path));
+	public final Html favicon(String path) {
+		this.addHeaderChild(
+			new Link()
+				.attr("rel", "icon")
+				.attr("type", "image/x-icon")
+				.attr("href", path)
+		);
+		return this;
+	}
+
+	public final Html addHeaderChild(WebXElement element) {
+		this.top.add(element.render());
+		return this;
+	}
+
+	public final Html addHeaderChildren(WebXElement... elements) {
+		for (var element: elements) {
+			this.top.add(element.render());
+		}
 		return this;
 	}
 	
 	public final Html addHeaderScript(String url) {
-		this.top.add(String.format("<script type=\"text/javascript\" src=\"%s\"> </script>", url));
+		this.addHeaderChild(
+			new Script()
+				.attr("type", "text/javascript")
+				.attr("src", url)
+		);
 		return this;
 	}
 
 	public final Html addHeaderStyleLink(String url) {
 		this.top.add(String.format("<link rel=\"stylesheet\" href=\"%s\" />", url));
+		this.addHeaderChild(
+			new Link()
+				.attr("rel", "stylesheet")
+				.attr("href", url)
+		);
 		return this;
 	}
 
