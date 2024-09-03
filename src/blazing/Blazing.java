@@ -55,6 +55,9 @@ public class Blazing {
 			return;
 		}
 
+		
+		BlazingLog.fine("\n".repeat(2).concat(BlazingInfo.logo()));
+
 		String _port = root_cls.getAnnotation(WebServer.class).value();
 		int port = Integer.parseInt(_port);
 		try {
@@ -78,7 +81,7 @@ public class Blazing {
 					var hasNoArg = method.getParameterCount() == 0;
 					return isAnnotated && isStatic && hasNoArg;
 				})
-				.map(method -> {
+				.forEach(method -> {
 					BlazingLog.info(String.format("Initializing the server with %s".indent(0), method.getName()));
 					try {
 						method.invoke(null);
@@ -86,9 +89,7 @@ public class Blazing {
 						Throwable cause = ex.getCause();
 						BlazingLog.severe(cause.toString());
 					}
-					return method;
-				})
-				.collect(Collectors.toList());
+				});
 
 			BlazingLog.info("Searching for @Route methods");
 			Stream.of(methods)
@@ -98,7 +99,7 @@ public class Blazing {
 					var hasOneArg = method.getParameterCount() == 1;
 					var paramTypes = method.getParameterTypes();
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
-				}).map(method -> {
+				}).forEach(method -> {
 				String path = method.getAnnotation(Route.class).value();
 				BlazingLog.info(String.format("Registered a route using @Route(`%s`)", path));
 				server.createContext(path, (HttpExchange he) -> {
@@ -109,10 +110,7 @@ public class Blazing {
 						BlazingLog.severe(ex.toString());
 					}
 				});
-				return method;
-			})
-				.collect(Collectors.toList());
-			;
+			});
 
 			BlazingLog.info("Searching for @Post methods");
 			Stream.of(methods)
@@ -122,7 +120,7 @@ public class Blazing {
 					var hasOneArg = method.getParameterCount() == 1;
 					var paramTypes = method.getParameterTypes();
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
-				}).map(method -> {
+				}).forEach(method -> {
 				String type = "POST";
 				String path = method.getAnnotation(Post.class).value();
 				BlazingLog.info(String.format("Registered a %s route @Post(`%s`)\n", type.toLowerCase(), path));
@@ -131,7 +129,6 @@ public class Blazing {
 					if (!requestMethod.equals(type)) {
 						return;
 					}
-
 					var response = new BlazingResponse(he);
 					try {
 						method.invoke(null, response);
@@ -139,10 +136,7 @@ public class Blazing {
 						BlazingLog.severe(ex.toString());
 					}
 				});
-				return method;
-			})
-				.collect(Collectors.toList());
-			;
+			});
 
 			BlazingLog.info("Searching for @Put methods");
 			Stream.of(methods)
@@ -152,7 +146,7 @@ public class Blazing {
 					var hasOneArg = method.getParameterCount() == 1;
 					var paramTypes = method.getParameterTypes();
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
-				}).map(method -> {
+				}).forEach(method -> {
 				String type = "PUT";
 				String path = method.getAnnotation(Put.class).value();
 				BlazingLog.info(String.format("Registered a %s route @Put(`%s`)", type.toLowerCase(), path));
@@ -169,10 +163,7 @@ public class Blazing {
 						BlazingLog.severe(ex.toString());
 					}
 				});
-				return method;
-			})
-				.collect(Collectors.toList());
-			;
+			});
 
 			BlazingLog.info("Searching for @Get methods");
 			Stream.of(methods)
@@ -182,7 +173,7 @@ public class Blazing {
 					var hasOneArg = method.getParameterCount() == 1;
 					var paramTypes = method.getParameterTypes();
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
-				}).map(method -> {
+				}).forEach(method -> {
 				String type = "GET";
 				String path = method.getAnnotation(Get.class).value();
 				BlazingLog.info(String.format("Registered a %s route @Get(`%s`)", type.toLowerCase(), path));
@@ -199,9 +190,7 @@ public class Blazing {
 						BlazingLog.severe(ex.toString());
 					}
 				});
-				return method;
-			})
-				.collect(Collectors.toList());
+			});
 
 			BlazingLog.info("Searching for @Delete methods");
 			Stream.of(methods)
@@ -211,26 +200,25 @@ public class Blazing {
 					var hasOneArg = method.getParameterCount() == 1;
 					var paramTypes = method.getParameterTypes();
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
-				}).map(method -> {
-				String type = "DELETE";
-				String path = method.getAnnotation(Delete.class).value();
-				BlazingLog.info(String.format("Registered a %s route @Post(`%s`)", type.toLowerCase(), path));
-				server.createContext(path, (HttpExchange he) -> {
-					String requestMethod = he.getRequestMethod();
-					if (!requestMethod.equals(type)) {
-						return;
-					}
+				})
+				.forEach(method -> {
+					String type = "DELETE";
+					String path = method.getAnnotation(Delete.class).value();
+					BlazingLog.info(String.format("Registered a %s route @Post(`%s`)", type.toLowerCase(), path));
+					server.createContext(path, (HttpExchange he) -> {
+						String requestMethod = he.getRequestMethod();
+						if (!requestMethod.equals(type)) {
+							return;
+						}
 
-					var response = new BlazingResponse(he);
-					try {
-						method.invoke(null, response);
-					} catch (IllegalAccessException | InvocationTargetException ex) {
-						BlazingLog.severe(ex.toString());
-					}
+						var response = new BlazingResponse(he);
+						try {
+							method.invoke(null, response);
+						} catch (IllegalAccessException | InvocationTargetException ex) {
+							BlazingLog.severe(ex.toString());
+						}
+					});
 				});
-				return method;
-			})
-				.collect(Collectors.toList());
 
 			var shutdownListener = new Thread() {
 				public void run() {
@@ -242,7 +230,7 @@ public class Blazing {
 							var hasNoArg = method.getParameterCount() == 0;
 							return isAnnotated && isStatic && hasNoArg;
 						})
-						.map(method -> {
+						.forEach(method -> {
 							BlazingLog.info(String.format("Calling De-initializer named: %s".indent(0), method.getName()));
 							try {
 								method.invoke(null);
@@ -250,18 +238,17 @@ public class Blazing {
 								Throwable cause = ex.getCause();
 								BlazingLog.severe(cause.toString());
 							}
-							return method;
-						})
-						.collect(Collectors.toList());
+						});
 
+					
 					BlazingLog.info("Stopping server server :)");
 					server.stop(0);
-          Runtime.getRuntime().removeShutdownHook(this);
+					Runtime.getRuntime().removeShutdownHook(this);
 				}
 			};
 			Runtime.getRuntime().addShutdownHook(shutdownListener);
 
-			BlazingLog.info("Done initializing server\n");
+			BlazingLog.info("Done initializing server!\n");
 
 			server.setExecutor(null); // Use the default executor
 			BlazingLog.info("Starting server :)");
