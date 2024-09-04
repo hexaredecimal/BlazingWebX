@@ -16,6 +16,9 @@ import java.util.logging.Logger;
  */
 public class FileSystem {
 
+	private FileSystem() {
+	}
+	
 	public static String readFileToString(String path) {
 		try (
 			Scanner sc = new Scanner(new File(path));) {
