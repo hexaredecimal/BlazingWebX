@@ -15,12 +15,14 @@ import java.util.logging.Logger;
  * @author hexaredecimal
  */
 public class FileSystem {
+
 	public static String readFileToString(String path) {
-		try {
-			Scanner sc = new Scanner(new File(path));
-			StringBuilder sb = new StringBuilder(); 
-			while (sc.hasNextLine()) 
-				sb.append(sc.nextLine()).append("\n"); 
+		try (
+			Scanner sc = new Scanner(new File(path));) {
+			StringBuilder sb = new StringBuilder();
+			while (sc.hasNextLine()) {
+				sb.append(sc.nextLine()).append("\n");
+			}
 
 			return sb.toString();
 		} catch (FileNotFoundException ex) {
@@ -30,6 +32,6 @@ public class FileSystem {
 
 	public static String fileExtension(String path) {
 		int lastDot = path.lastIndexOf('.');
-		return lastDot == -1 ? null: path.substring(lastDot + 1);
+		return lastDot == -1 ? null : path.substring(lastDot + 1);
 	}
 }
