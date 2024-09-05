@@ -239,11 +239,8 @@ public class Blazing {
 								BlazingLog.severe(cause.toString());
 							}
 						});
-
-					
 					BlazingLog.info("Stopping server server :)");
 					server.stop(0);
-					Runtime.getRuntime().removeShutdownHook(this);
 				}
 			};
 			Runtime.getRuntime().addShutdownHook(shutdownListener);
