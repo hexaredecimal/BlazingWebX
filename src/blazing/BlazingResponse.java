@@ -19,12 +19,12 @@ import java.util.logging.Logger;
  *
  * <pre>
  * {@code
- 	@Route
- 	public static void home(BlazingResponse response) {
- 		....
- 		response.sendResponse("hello, world");
- 	}
- }
+ * @Route
+ * public static void home(BlazingResponse response) {
+ * ....
+ * response.sendResponse("hello, world");
+ * }
+ * }
  * </pre>
  *
  * The snipped above send a response with the text `Hello, World` to the client
@@ -58,16 +58,16 @@ public class BlazingResponse {
 	 *
 	 * <pre>
 	 * {@code
- 	@Route("/users")
- 	public static void home(BlazingResponse response) {
- 		Map<String, String> params = response.params();
- 		String name = params.get("name");
- 		if (users.contains(name)) {
- 			....
- 		}
- 		....
- 	}
- }
+	 * @Route("/users")
+	 * public static void home(BlazingResponse response) {
+	 * Map<String, String> params = response.params();
+	 * String name = params.get("name");
+	 * if (users.contains(name)) {
+	 * ....
+	 * }
+	 * ....
+	 * }
+	 * }
 	 * </pre>
 	 *
 	 * @return Returns a Map of queries issued along with the request by the
@@ -92,7 +92,7 @@ public class BlazingResponse {
 	 *
 	 * The snipped above response with the Paragraph element with inner text set.
 	 *
-	 * @param root The root node of the UI response. 
+	 * @param root The root node of the UI response.
 	 */
 	public void sendUiRespose(WebXElement root) {
 		this.sendResponse(root.render());
@@ -128,15 +128,57 @@ public class BlazingResponse {
 	 * @param data The actual data being sent to the client.
 	 */
 	public void sendResponse(String data) {
-		try {
+		try (OutputStream os = exchange.getResponseBody();) {
 			var bytes = data.getBytes();
 			exchange.sendResponseHeaders(200, bytes.length);
-			OutputStream os = exchange.getResponseBody();
 			os.write(bytes);
-			os.close();
 		} catch (IOException ex) {
-			Logger.getLogger(BlazingResponse.class.getName()).log(Level.SEVERE, null, ex);
+			BlazingLog.severe(ex.getMessage());
 		}
 	}
 
+	/**
+	 * Responds to the client with text data attached to a status code.
+	 *
+	 * <pre>
+	 * {@code
+	 * 		response.sendResponse(404, "hello 1234");
+	 * }
+	 * </pre>
+	 *
+	 * The snipped above response with text data.
+	 *
+	 * @param status The status code sent to the client
+	 * @param data The actual data being sent to the client.
+	 */
+	
+	public void sendResponse(int status, String data) {
+		try (OutputStream os = exchange.getResponseBody();) {
+			var bytes = data.getBytes();
+			exchange.sendResponseHeaders(status, bytes.length);
+			os.write(bytes);
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
+
+
+	/**
+	 * Sends a status message to the client
+	 *
+	 * <pre>
+	 * {@code
+	 * 		response.sendStatus(404);
+	 * }
+	 * </pre>
+	 *
+	 * @param status The status code sent to the client
+	 */
+	public void sendStatus(int status) {
+		try {
+			exchange.sendResponseHeaders(status, -1);
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
 }
