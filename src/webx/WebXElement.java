@@ -106,8 +106,33 @@ public abstract class WebXElement {
 	 * @param trigger
 	 * @return
 	 */
+
 	public WebXElement hxSwap(String target) {
 		this.attr("hx-swap", target);
+		return this;
+	}
+	
+	/**
+	 * The hx-swap-oob attribute allows you to specify that some content in a
+	 * response should be swapped into the DOM somewhere other than the target,
+	 * that is “Out of Band”. This allows you to piggy back updates to other
+	 * element updates on a response.
+	 * 
+	 * @see <a href="https://htmx.org/attributes/hx-swap-oob/">htmx docs</a>
+	 *
+	 * <pre>
+	 * {@code
+	 * 	new Button("Click Me")
+	 * 		.hxPost("/greet)
+	 * 		.hxSwapOob("true");
+	 * }
+	 * </pre>
+	 *
+	 * @param trigger
+	 * @return
+	 */
+	public WebXElement hxSwapOob(String target) {
+		this.attr("hx-swap-oob", target);
 		return this;
 	}
 
@@ -121,10 +146,36 @@ public abstract class WebXElement {
 		return this;
 	}
 
+	public WebXElement hxBoost(String value) {
+		this.attr("hx-boost", value);
+		return this;
+	}
+
+	public WebXElement hxConfirm(String message) {
+		this.attr("hx-get", message);
+		return this;
+	}
+
+	public WebXElement hxExt(String ext) {
+		this.attr("hx-ext", ext);
+		return this;
+	}
+
+	public WebXElement hxWs(String url) {
+		this.attr("hx-ws", url);
+		return this;
+	}
+
+	public WebXElement hxSend(String path) {
+		this.attr("hx-send", path);
+		return this;
+	}
+
 	public WebXElement id(String id) {
 		this.attr("id", id);
 		return this;
 	}
+
 
 	public WebXElement className(String names) {
 		this.attr("class", names);
