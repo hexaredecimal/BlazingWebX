@@ -21,6 +21,7 @@ public class Html extends WebXContainerElement {
 				.attr("content", "width=device-width, initial-scale=1.0")
 		);
 		this.addHeaderScript("https://unpkg.com/htmx.org@2.0.1");
+		this.addHeaderScript("https://unpkg.com/htmx.org/dist/ext/ws.js");
 	}
 
 	public final Html title(String title) {
