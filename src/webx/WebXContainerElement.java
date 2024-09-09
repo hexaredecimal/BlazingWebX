@@ -63,6 +63,44 @@ public class WebXContainerElement extends WebXElement {
 	}
 
 	@Override
+	public WebXContainerElement hxSwapOob(String target) {
+		super.hxSwap(target);
+		return this;
+	}
+
+	@Override
+	public WebXContainerElement hxBoost(String value) {
+		super.hxBoost(value);
+		return this;
+	}
+
+	@Override
+	public WebXContainerElement hxConfirm(String message) {
+		super.hxConfirm(message);
+		return this;
+	}
+
+	@Override
+	public WebXContainerElement hxExt(String ext) {
+		super.hxExt(ext);
+		return this;
+	}
+
+	@Override
+	public WebXContainerElement hxWs(String url) {
+		super.hxWs(url);
+		return this;
+	}
+
+	@Override
+	public WebXContainerElement hxSend(String path) {
+		super.hxSend(path);
+		return this;
+	}
+
+
+
+	@Override
 	public WebXContainerElement hxSwap(String target) {
 		super.hxSwap(target);
 		return this;
