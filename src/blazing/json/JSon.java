@@ -27,7 +27,15 @@ public class JSon {
 				int length = Array.getLength(value);
 				Object[] boxedArray = new Object[length];
 				for (int j = 0; j < length; j++) {
-					boxedArray[j] = Array.get(value, j);
+					var object = Array.get(value, j);
+          if (object instanceof Map hashmap) {
+            if (map == hashmap) { 
+              continue;
+            }
+            boxedArray[j] = String.format("\n%s", from(hashmap)).indent(4);
+          } else {
+            boxedArray[j] = object;
+          }
 				}
 				line = String.format(STANDARD_FMT, key, Arrays.toString(boxedArray), end);
 			} else if (value instanceof Double
@@ -44,14 +52,5 @@ public class JSon {
 		}
 		sb.append("}".indent(0));
 		return sb.toString();
-	}
-
-	public static void main(String[] args) {
-		HashMap<Object, Object> map = new HashMap<>();
-		map.put("arr", new int[]{1, 2, 3, 4, 5});
-		map.put("arr2", new int[]{4, 5, 6, 2, 9, 7});
-
-		map.put("char", 'A');
-		System.out.println(from(map));
 	}
 }
