@@ -93,4 +93,9 @@ public class BlazingLog {
 	public static void fine(String message) {
 		logger.fine(message);
 	}
+  
+  public static void panic(String message) {
+    severe(message);
+    System.exit(1);
+  }
 }
