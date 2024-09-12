@@ -20,11 +20,11 @@ import java.io.IOException;
  */
 public class BlazingRequest {
   
-  public static Result<String, String> post(URL server, Map<?, ?> args) {
+  public static Result<String, IOException> post(URL server, Map<?, ?> args) {
     return doMethodWithBody("POST", server, args);
   }
 
-  private static Result<String, String> doMethodWithBody(String method, URL server, Map<?, ?> args) {
+  private static Result<String, IOException> doMethodWithBody(String method, URL server, Map<?, ?> args) {
     try {
       URLConnection con = server.openConnection();
       HttpURLConnection http = (HttpURLConnection) con;
@@ -48,7 +48,7 @@ public class BlazingRequest {
       if (status >= 200 && status < 300) {
         responseStream = http.getInputStream(); // Success
       } else {
-        return Result.err("Server response: " + status);
+        return Result.err(new IOException("Server response: " + status));
       }
 
       BufferedReader in = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
@@ -66,7 +66,7 @@ public class BlazingRequest {
       return Result.ok(res);
 
     } catch (IOException ex) {
-      return Result.err(ex.getMessage());
+      return Result.err(ex);
     }
   }
 }
