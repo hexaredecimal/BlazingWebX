@@ -22,30 +22,33 @@ public class Result<T, E> {
 
   public T unwrap() {
     if (this instanceof Err err) {
-      String msg = String.format("Attempt to unwrap value of %s with error value: `%s`", this, err.getErr());
+      var error = err.getErr();
+      if (error instanceof Throwable v) {
+        error = v.getMessage();
+      }
+      String msg = String.format("Attempt to unwrap value of %s with error value: `%s`", this, error);
       BlazingLog.panic(msg);
-    } 
-    
+    }
+
     var ok = (Ok) this;
-    return (T) ok.getValue(); 
+    return (T) ok.getValue();
   }
-  
-  
+
   public T unwrapOr(T value) {
     if (this instanceof Err) {
       return value;
-    } 
+    }
     var ok = (Ok) this;
-    return (T) ok.getValue(); 
+    return (T) ok.getValue();
   }
-  
+
   public T unwrapOrElse(Supplier<T> fx) {
     if (this instanceof Err) {
       return fx.get();
-    } 
+    }
     var ok = (Ok) this;
-    return (T) ok.getValue(); 
-  }  
+    return (T) ok.getValue();
+  }
 
   private static class Ok<T, E> extends Result<T, E> {
 
