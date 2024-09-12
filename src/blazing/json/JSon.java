@@ -1,5 +1,6 @@
 package blazing.json;
 
+import blazing.types.Result;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 public class JSon {
 
-	public static String from(Map<?, ?> map) {
+	public static Result<String, Exception> from(Map<?, ?> map) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{".indent(0));
 		final String STANDARD_FMT = "\"%s\": %s%s";
@@ -30,7 +31,7 @@ public class JSon {
 					var object = Array.get(value, j);
           if (object instanceof Map hashmap) {
             if (map == hashmap) { 
-              continue;
+              return Result.err(new Exception("Recursive structure encountered"));
             }
             boxedArray[j] = String.format("\n%s", from(hashmap)).indent(4);
           } else {
@@ -45,12 +46,12 @@ public class JSon {
 				|| value instanceof Byte) {
 				line = String.format(STANDARD_FMT, key, value, end);
 			} else if (value instanceof Map<?, ?> child) {
-				value = JSon.from(child).trim();
+				value = JSon.from(child).unwrapOr("null").trim();
 				line = String.format(STANDARD_FMT, key, value, end);
 			}
 			sb.append(line.indent(4));
 		}
 		sb.append("}".indent(0));
-		return sb.toString();
+		return Result.ok(sb.toString());
 	}
 }
