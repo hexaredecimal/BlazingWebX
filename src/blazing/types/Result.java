@@ -1,6 +1,8 @@
 package blazing.types;
 
 import blazing.BlazingLog;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  *
@@ -27,6 +29,23 @@ public class Result<T, E> {
     var ok = (Ok) this;
     return (T) ok.getValue(); 
   }
+  
+  
+  public T unwrapOr(T value) {
+    if (this instanceof Err) {
+      return value;
+    } 
+    var ok = (Ok) this;
+    return (T) ok.getValue(); 
+  }
+  
+  public T unwrapOrElse(Supplier<T> fx) {
+    if (this instanceof Err) {
+      return fx.get();
+    } 
+    var ok = (Ok) this;
+    return (T) ok.getValue(); 
+  }  
 
   private static class Ok<T, E> extends Result<T, E> {
 
