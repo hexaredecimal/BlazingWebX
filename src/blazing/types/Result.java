@@ -93,12 +93,4 @@ public class Result<T, E> {
       return "Result.Err(" + err + ")";
     }
   }
-
-  public static Result<Double, String> safeDiv(double x, double y) {
-    if (y == 0) {
-      return Result.err("Divide by zero");
-    }
-
-    return Result.ok(x / y);
-  }
 }
