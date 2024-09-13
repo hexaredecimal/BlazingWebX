@@ -26,7 +26,7 @@ public class Result<T, E> {
       if (error instanceof Throwable v) {
         error = v.getMessage();
       }
-      String msg = String.format("Attempt to unwrap value of %s with error value: `%s`", this, error);
+      String msg = String.format("Attempt to unwrap value of Result.Err() with error value: `%s`", error);
       BlazingLog.panic(msg);
     }
 
@@ -50,6 +50,14 @@ public class Result<T, E> {
     return (T) ok.getValue();
   }
 
+  public boolean isErr() {
+    return this instanceof Err;
+  }
+  
+  public boolean isOk() {
+    return this instanceof Ok;
+  }
+  
   private static class Ok<T, E> extends Result<T, E> {
 
     private final T value;
