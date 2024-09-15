@@ -20,12 +20,13 @@ import java.io.IOException;
  */
 public class BlazingRequest {
   
-  public static Result<String, IOException> post(URL server, Map<?, ?> args) {
-    return doMethodWithBody("POST", server, args);
+  public static Result<String, IOException> post(String url, Map<?, ?> args) {
+    return doMethodWithBody("POST", url, args);
   }
 
-  private static Result<String, IOException> doMethodWithBody(String method, URL server, Map<?, ?> args) {
+  private static Result<String, IOException> doMethodWithBody(String method, String url, Map<?, ?> args) {
     try {
+      var server = new URL(url);
       URLConnection con = server.openConnection();
       HttpURLConnection http = (HttpURLConnection) con;
       http.setRequestMethod(method.toUpperCase());
