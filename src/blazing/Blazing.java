@@ -82,7 +82,7 @@ public class Blazing {
 					return isAnnotated && isStatic && hasNoArg;
 				})
 				.forEach(method -> {
-					BlazingLog.info(String.format("Initializing the server with %s".indent(0), method.getName()));
+					BlazingLog.info(String.format("Initializing the server with %s", method.getName()));
 					try {
 						method.invoke(null);
 					} catch (IllegalAccessException | InvocationTargetException ex) {
@@ -123,7 +123,7 @@ public class Blazing {
 				}).forEach(method -> {
 				String type = "POST";
 				String path = method.getAnnotation(Post.class).value();
-				BlazingLog.info(String.format("Registered a %s route @Post(`%s`)\n", type.toLowerCase(), path));
+				BlazingLog.info(String.format("Registered a %s route @Post(`%s`)", type.toLowerCase(), path));
 				server.createContext(path, (HttpExchange he) -> {
 					String requestMethod = he.getRequestMethod();
 					if (!requestMethod.equals(type)) {
@@ -245,7 +245,7 @@ public class Blazing {
 			};
 			Runtime.getRuntime().addShutdownHook(shutdownListener);
 
-			BlazingLog.info("Done initializing server!\n");
+			BlazingLog.info("Done initializing server!");
 
 			server.setExecutor(null); // Use the default executor
 			BlazingLog.info("Starting server :)");
