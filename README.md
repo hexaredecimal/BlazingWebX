@@ -21,9 +21,9 @@
 - [X] Builtin HTMX API
 - [X] Static content Server
 - [X] Support for most used HTTP methods
-- [ ] SQL intergration
-- [ ] SQL Integration
-- [ ] SQL Data Binding
+- [X] Simple Map to Json implementation
+- [X] Simple Wrapper for Java hashing API
+- [X] Https request api 
 
 ## Example
 >> You basically create 2 classes. Your program class containing your java entry point. This class registers your Server class.
