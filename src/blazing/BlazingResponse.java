@@ -1,5 +1,6 @@
 package blazing;
 
+import blazing.types.Result;
 import com.sun.net.httpserver.HttpExchange;
 import webx.WebXElement;
 import java.io.IOException;
@@ -43,8 +44,9 @@ public class BlazingResponse {
 		InputStream is = exchange.getRequestBody();
 		try {
 			String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-			this.params = parseQuery(body);
+			this.params = parseQuery(body).unwrapOr(new HashMap<>());
 		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
 		}
 	}
 
@@ -98,20 +100,25 @@ public class BlazingResponse {
 		this.sendResponse(root.render());
 	}
 
-	private Map<String, String> parseQuery(String query) throws IOException {
+	private Result<Map<String, String>, IOException> parseQuery(String query) {
 		Map<String, String> result = new HashMap<>();
-		for (String param : query.split("&")) {
-			String[] pair = param.split("=");
-			if (pair.length > 1) {
-				String key = URLDecoder.decode(pair[0], StandardCharsets.UTF_8.name());
-				String value = URLDecoder.decode(pair[1], StandardCharsets.UTF_8.name());
-				result.put(key, value);
-			} else {
-				String key = URLDecoder.decode(pair[0], StandardCharsets.UTF_8.name());
-				result.put(key, "");
+		try {
+			for (String param : query.split("&")) {
+				String[] pair = param.split("=");
+				if (pair.length > 1) {
+					String key = URLDecoder.decode(pair[0], StandardCharsets.UTF_8.name());
+					String value = URLDecoder.decode(pair[1], StandardCharsets.UTF_8.name());
+					result.put(key, value);
+				} else {
+					String key = URLDecoder.decode(pair[0], StandardCharsets.UTF_8.name());
+					result.put(key, "");
+				}
 			}
+		} catch (IOException ex) {
+			return Result.err(ex);
+		} finally {
+			return Result.ok(result);
 		}
-		return result;
 	}
 
 	/**
@@ -151,7 +158,6 @@ public class BlazingResponse {
 	 * @param status The status code sent to the client
 	 * @param data The actual data being sent to the client.
 	 */
-	
 	public void sendResponse(int status, String data) {
 		try (OutputStream os = exchange.getResponseBody();) {
 			var bytes = data.getBytes();
@@ -161,7 +167,6 @@ public class BlazingResponse {
 			BlazingLog.severe(ex.getMessage());
 		}
 	}
-
 
 	/**
 	 * Sends a status message to the client
