@@ -23,6 +23,27 @@ public class BlazingRequest {
   public static Result<String, IOException> post(String url, Map<?, ?> args) {
     return doMethodWithBody("POST", url, args);
   }
+	
+	public static Result<String, IOException> put(String url, Map<?, ?> args) {
+		return doMethodWithBody("PUT", url, args);
+	}
+
+	public static Result<String, IOException> delete(String url) {
+		return doMethodWithoutBody("DELETE", url);
+	}
+	
+	public static Result<String, IOException> get(String urlString) {
+		return doMethodWithoutBody("GET", urlString);
+	}
+
+	public static Result<String, IOException> patch(String url, Map<?, ?> args) {
+		return doMethodWithBody("PATCH", url, args);
+	}
+
+	public static Result<String, IOException> head(String urlString) {
+		return doMethodWithoutBody("HEAD", urlString);
+	}
+	
 
   private static Result<String, IOException> doMethodWithBody(String method, String url, Map<?, ?> args) {
     try {
@@ -70,4 +91,41 @@ public class BlazingRequest {
       return Result.err(ex);
     }
   }
+	private static Result<String, IOException> doMethodWithoutBody(String method, String urlString) {
+		HttpURLConnection http = null;
+		try {
+			// Create a URL object with the target URL
+			URL url = new URL(urlString);
+			http = (HttpURLConnection) url.openConnection();
+			http.setRequestMethod(method.toUpperCase());
+
+			// Get the response
+			int status = http.getResponseCode();
+			InputStream responseStream;
+
+			if (status == HttpURLConnection.HTTP_OK || status == HttpURLConnection.HTTP_NO_CONTENT) {
+				responseStream = http.getInputStream();
+			} else {
+				responseStream = http.getErrorStream();
+			}
+
+			// Process the response stream
+			BufferedReader in = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
+			String inputLine;
+			StringBuilder response = new StringBuilder();
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			String res = response.toString();
+			http.disconnect();
+			return Result.ok(res);
+
+		} catch (IOException ex) {
+			if (http != null) {
+				http.disconnect();
+			}
+			return Result.err(ex);
+		}
+	}
 }
