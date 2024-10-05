@@ -136,6 +136,34 @@ public abstract class WebXElement {
 		return this;
 	}
 
+	/**
+	 * Submits a file uploaded via a form to the server
+	 * 
+	 * @see <a href="https://htmx.org/examples/file-upload/">htmx docs</a>
+	 * 
+	 * @param type
+	 * @return 
+	 */
+	public WebXElement hxEncoding(String type) {
+		this.attr("hx-encoding", type);
+		return this;
+	}
+
+	/**
+	 * Submits a file uploaded via a form to the server. 
+	 * Sets the the type to "multipart/form-data"
+	 * 
+	 * @see <a href="https://htmx.org/examples/file-upload/">htmx docs</a>
+	 * 
+	 * @param type
+	 * @return 
+	 */
+	public WebXElement hxEncoding() {
+		this.attr("hx-encoding", "multipart/form-data");
+		return this;
+	}
+
+	
 	public WebXElement hxPost(String path) {
 		this.attr("hx-post", path);
 		return this;

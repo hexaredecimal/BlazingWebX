@@ -98,7 +98,17 @@ public class WebXContainerElement extends WebXElement {
 		return this;
 	}
 
+	@Override
+	public WebXContainerElement hxEncoding(String type) {
+		super.hxEncoding(type);
+		return this;
+	}
 
+	@Override
+	public WebXContainerElement hxEncoding() {
+		super.hxEncoding();
+		return this;
+	}
 
 	@Override
 	public WebXContainerElement hxSwap(String target) {
