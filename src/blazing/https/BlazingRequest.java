@@ -20,31 +20,111 @@ import java.io.IOException;
  */
 public class BlazingRequest {
 
+	/**
+	 * Sends a POST request to the target url with the args as a payload. 
+	 * The default content type is "application/x-www-form-urlencoded; charset=UTF-8"
+	 * @param url 
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
 	public static Result<String, IOException> post(String url, Map<?, ?> args) {
-		return doMethodWithBody("POST", url, args);
+		return doMethodWithBody("POST", url, "application/x-www-form-urlencoded; charset=UTF-8", args);
 	}
 
+	/**
+	 * Sends a POST request to the target url with the args as a payload and allows for a specific content type
+	 * @param url
+	 * @param content_type
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
+	public static Result<String, IOException> post(String url, String content_type, Map<?, ?> args) {
+		return doMethodWithBody("POST", url, content_type, args);
+	}
+
+	/**
+	 * Sends a PUT request to the target url with the args as a payload. 
+	 * The default content type is "application/x-www-form-urlencoded; charset=UTF-8"
+	 * @param url 
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
 	public static Result<String, IOException> put(String url, Map<?, ?> args) {
-		return doMethodWithBody("PUT", url, args);
+		return doMethodWithBody("PUT", url, "application/x-www-form-urlencoded; charset=UTF-8", args);
+	}
+	
+	/**
+	 * Sends a PUT request to the target url with the args as a payload and allows for a specific content type
+	 * @param url
+	 * @param content_type
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
+	public static Result<String, IOException> put(String url, String content_type, Map<?, ?> args) {
+		return doMethodWithBody("PUT", url, content_type, args);
 	}
 
+	/**
+	 * Sends a DELETE request to the target url
+	 * @param url
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
 	public static Result<String, IOException> delete(String url) {
 		return doMethodWithoutBody("DELETE", url);
 	}
 
+	/**
+	 * Sends a GET request to the target url
+	 * @param url
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
 	public static Result<String, IOException> get(String urlString) {
 		return doMethodWithoutBody("GET", urlString);
 	}
 
+	
+	/**
+	 * Sends a PATCH request to the target url with the args as a payload. 
+	 * The default content type is "application/x-www-form-urlencoded; charset=UTF-8"
+	 * @param url 
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
 	public static Result<String, IOException> patch(String url, Map<?, ?> args) {
-		return doMethodWithBody("PATCH", url, args);
+		return doMethodWithBody("PATCH", url, "application/x-www-form-urlencoded; charset=UTF-8", args);
 	}
 
+
+	/**
+	 * Sends a PATCH request to the target url with the args as a payload and allows for a specific content type
+	 * @param url
+	 * @param content_type
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
+	public static Result<String, IOException> patch(String url, String content_type, Map<?, ?> args) {
+		return doMethodWithBody("PATCH", url, content_type, args);
+	}
+
+	/**
+	 * Sends a HEAD request to the target url
+	 * @param url
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
 	public static Result<String, IOException> head(String urlString) {
 		return doMethodWithoutBody("HEAD", urlString);
 	}
 
-	private static Result<String, IOException> doMethodWithBody(String method, String url, Map<?, ?> args) {
+	private static Result<String, IOException> doMethodWithBody(String method, String url, String content_type, Map<?, ?> args) {
 		try {
 			var server = new URL(url);
 			URLConnection con = server.openConnection();
@@ -57,7 +137,7 @@ public class BlazingRequest {
 			http.setFixedLengthStreamingMode(length);
 
 			// Allow the user to set the content properties
-			http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			http.setRequestProperty("Content-Type", content_type);
 			http.connect();
 
 			OutputStream os = http.getOutputStream();
