@@ -9,7 +9,10 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,14 +40,27 @@ public class BlazingResponse {
 
 	private HttpExchange exchange;
 	private Map<String, String> params;
+	private Map<String, byte[]> files;
+	private byte[] bytes;
 
 	public BlazingResponse(HttpExchange exchange) {
 		this.exchange = exchange;
 
 		InputStream is = exchange.getRequestBody();
 		try {
-			String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-			this.params = parseQuery(body).unwrapOr(new HashMap<>());
+			this.bytes = is.readAllBytes();
+			this.files = new HashMap<>();
+			this.params = new HashMap<>();
+			String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
+			if (contentType == null || !contentType.contains("multipart/form-data")) {
+				String body = new String(bytes, StandardCharsets.UTF_8);
+				this.params = parseQuery(body).unwrapOr(new HashMap<>());
+			} else {
+				var result = parseFiles();
+				if (result.isErr()) {
+					BlazingLog.severe(result.unwrapErr().getMessage());
+				}
+			}
 		} catch (IOException ex) {
 			BlazingLog.severe(ex.getMessage());
 		}
@@ -54,20 +70,112 @@ public class BlazingResponse {
 		return this.exchange.getRequestURI();
 	}
 
+	private Result<Boolean, IOException> parseFiles() {
+		if ("POST".equals(exchange.getRequestMethod())) {
+			String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
+
+			if (contentType != null && contentType.contains("multipart/form-data")) {
+				// Boundary extraction from contentType header
+				String boundary = contentType.split("boundary=")[1].trim();
+				String boundaryPrefix = "--" + boundary;
+
+				// Read the request body as bytes
+				byte[] requestBodyBytes = this.bytes;
+
+				// Split the body based on the boundary
+				String bodyString = new String(requestBodyBytes, StandardCharsets.ISO_8859_1);
+				String[] parts = bodyString.split(boundaryPrefix);
+
+
+				// Process each part (fields and files)
+				for (String part : parts) {
+					// Check if the part is not empty
+					if (part.trim().isEmpty()) {
+						continue; // Skip empty parts
+					}
+
+					// Ensure we treat this part as bytes
+					byte[] partBytes = part.getBytes(StandardCharsets.ISO_8859_1);
+
+					// Convert part to string for header extraction
+					String partString = new String(partBytes, StandardCharsets.ISO_8859_1);
+					if (partString.contains("Content-Disposition: form-data")) {
+						// Extract filename
+						String filename = extractFileName(partString);
+
+						if (filename != null) {
+							// Find the starting point of the binary data
+							int startIndexOfContent = partString.indexOf("\r\n\r\n") + 4; // Skip headers and newlines
+
+							// Get the raw bytes for the file content
+							byte[] fileContent = Arrays.copyOfRange(partBytes, startIndexOfContent, partBytes.length);
+							this.files.put(filename, fileContent);
+						} else {
+							// This is a regular field
+							String name = extractFieldName(partString);
+							int startIndexOfContent = partString.indexOf("\r\n\r\n") + 4; // Skip headers and newlines
+							byte[] fieldContent = Arrays.copyOfRange(partBytes, startIndexOfContent, partBytes.length);
+							this.params.put(name, new String(fieldContent).trim());
+						}
+					}
+				}
+
+				return Result.ok(true);
+			} else {
+				return Result.err(new IOException("Invalid request type, files can only be uploaded using a POST request"));
+			}
+		}
+		return null;
+	}
+	private String extractFieldName(String part) {
+		// Find the position of name=
+		int startIndex = part.indexOf("name=");
+		if (startIndex != -1) {
+			startIndex += "name=".length();
+			int firstQuoteIndex = part.indexOf('"', startIndex);
+			int secondQuoteIndex = part.indexOf('"', firstQuoteIndex + 1);
+			if (firstQuoteIndex != -1 && secondQuoteIndex != -1) {
+				return part.substring(firstQuoteIndex + 1, secondQuoteIndex);
+			}
+		}
+		return null;
+	}
+	private String extractFileName(String part) {
+		String fileName = null;
+
+		// Find the position of filename=
+		int startIndex = part.indexOf("filename=");
+		if (startIndex != -1) {
+			// The filename value starts after 'filename=' (which is 9 characters)
+			startIndex += "filename=".length();
+
+			// The value is usually enclosed in double quotes, so find the positions of the quotes
+			int firstQuoteIndex = part.indexOf('"', startIndex);
+			int secondQuoteIndex = part.indexOf('"', firstQuoteIndex + 1);
+
+			// Extract the filename between the quotes
+			if (firstQuoteIndex != -1 && secondQuoteIndex != -1) {
+				fileName = part.substring(firstQuoteIndex + 1, secondQuoteIndex);
+			}
+		}
+
+		return fileName;
+	}
+
+
 	/**
 	 * Query parameters can be passed with the request without modifying the
-	 * request path. Parameters are stored in the resposen object.
+	 * request path. Parameters are stored in the response object.
 	 *
 	 * <pre>
 	 * {@code
 	 * @Route("/users")
 	 * public static void home(BlazingResponse response) {
-	 * Map<String, String> params = response.params();
-	 * String name = params.get("name");
-	 * if (users.contains(name)) {
-	 * ....
-	 * }
-	 * ....
+	 * 	Map<String, String> params = response.params();
+	 * 	String name = params.get("name");
+	 * 	if (users.contains(name)) {
+	 * 		....
+	 * 	}
 	 * }
 	 * }
 	 * </pre>
@@ -78,6 +186,25 @@ public class BlazingResponse {
 	 */
 	public Map<String, String> params() {
 		return this.params;
+	}
+
+	
+	/**
+	 * Holds the files parsed from a multipart/form-data form
+	 * 
+	 * <pre>
+	 * {@code
+	 * @Post("/v1/post/upload")
+	 * public static void home(BlazingResponse response) {
+	 * 	Map<String, byte[]> files = response.files();
+	 * }
+	 * }
+	 * </pre>
+	 *
+	 * @return Returns a Map of file names and their binary representations as binary data
+	 */
+	public Map<String, byte[]> files() {
+		return this.files;
 	}
 
 	/**
