@@ -30,10 +30,10 @@ public class JSon {
 				for (int j = 0; j < length; j++) {
 					var object = Array.get(value, j);
           if (object instanceof Map hashmap) {
-            if (map == hashmap) { 
+            if (map == hashmap || map.hashCode() == hashmap.hashCode()) { 
               return Result.err(new Exception("Recursive structure encountered"));
             }
-            boxedArray[j] = String.format("\n%s", from(hashmap)).indent(4);
+            boxedArray[j] = String.format("\n%s", from(hashmap).unwrap()).indent(4);
           } else {
             boxedArray[j] = object;
           }
