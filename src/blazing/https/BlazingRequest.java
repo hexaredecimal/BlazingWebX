@@ -33,6 +33,18 @@ public class BlazingRequest {
 	}
 
 	/**
+	 * Sends a POST request to the target url with the args string as a payload. 
+	 * The default content type is "application/x-www-form-urlencoded; charset=UTF-8"
+	 * @param url 
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
+	public static Result<String, IOException> post(String url, String args) {
+		return doMethodWithBody("POST", url, "application/x-www-form-urlencoded; charset=UTF-8", args);
+	}
+	
+	/**
 	 * Sends a POST request to the target url with the args as a payload and allows for a specific content type
 	 * @param url
 	 * @param content_type
@@ -41,6 +53,18 @@ public class BlazingRequest {
 	 * Status 404 is also an error.
 	 */
 	public static Result<String, IOException> post(String url, String content_type, Map<?, ?> args) {
+		return doMethodWithBody("POST", url, content_type, args);
+	}
+	
+	/**
+	 * Sends a POST request to the target url with the args string as a payload and allows for a specific content type
+	 * @param url
+	 * @param content_type
+	 * @param args
+	 * @return a Result Object that contains the data response or an IOException if there was an error. 
+	 * Status 404 is also an error.
+	 */
+	public static Result<String, IOException> post(String url, String content_type, String args) {
 		return doMethodWithBody("POST", url, content_type, args);
 	}
 
@@ -177,6 +201,60 @@ public class BlazingRequest {
 		}
 	}
 
+	private static Result<String, IOException> doMethodWithBody(String method, String url, String content_type, String args) {
+		try {
+			var server = new URL(url);
+			URLConnection con = server.openConnection();
+			HttpURLConnection http = (HttpURLConnection) con;
+			http.setRequestMethod(method.toUpperCase());
+			http.setDoOutput(true);
+			String results = args;
+			byte[] out = results.getBytes(StandardCharsets.UTF_8);
+			int length = out.length;
+			http.setFixedLengthStreamingMode(length);
+
+			// Allow the user to set the content properties
+			http.setRequestProperty("Content-Type", content_type);
+			http.connect();
+
+			OutputStream os = http.getOutputStream();
+			os.write(out);
+
+			// Read the response
+			int status = http.getResponseCode();
+			InputStream responseStream;
+
+			boolean isError = false;
+			if (status >= 200 && status < 300) {
+				responseStream = http.getInputStream(); // Success
+			} else {
+				isError = true;
+				responseStream = http.getErrorStream();
+			}
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
+			String inputLine;
+			StringBuilder response = new StringBuilder();
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+
+			in.close();
+
+			// Print the response
+			String res = response.toString();
+			http.disconnect();
+			if (isError) {
+				return Result.err(new IOException("Error(" + status + ") with message: " + res));
+			}
+			return Result.ok(res);
+
+		} catch (IOException ex) {
+			return Result.err(ex);
+		}
+	}
+
+	
 	private static Result<String, IOException> doMethodWithoutBody(String method, String urlString) {
 		HttpURLConnection http = null;
 		try {
