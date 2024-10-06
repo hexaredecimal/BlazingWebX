@@ -122,11 +122,13 @@ public class WebXContainerElement extends WebXElement {
 		return this;
 	}
 	
+	@Override
 	public WebXContainerElement hxTarget(String target) {
 		super.hxTarget(target);
 		return this;
 	}
 
+	@Override
 	public WebXContainerElement hxTrigger(String trigger) {
 		super.hxTrigger(trigger);
 		return this;
