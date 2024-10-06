@@ -50,6 +50,17 @@ public class Result<T, E> {
     return (T) ok.getValue();
   }
 
+  public E unwrapErr() {
+    if (this instanceof Ok) {
+      String msg = "Attempt to unwrap value of Result.Ok()";
+      BlazingLog.panic(msg);
+    }
+
+    var err = (Err) this;
+    return (E) err.getErr();
+  }
+
+	
   public boolean isErr() {
     return this instanceof Err;
   }
