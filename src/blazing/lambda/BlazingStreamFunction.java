@@ -1,4 +1,4 @@
-package lambda;
+package blazing.lambda;
 
 import java.io.File;
 import java.io.OutputStream;
