@@ -1,6 +1,6 @@
 package blazing;
 
-import lambda.BlazingStreamFunction;
+import blazing.lambda.BlazingStreamFunction;
 import blazing.types.Result;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.File;
