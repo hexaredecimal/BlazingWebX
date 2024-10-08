@@ -2,6 +2,7 @@ package blazing;
 
 import blazing.types.Result;
 import com.sun.net.httpserver.HttpExchange;
+import java.io.File;
 import webx.WebXElement;
 import java.io.IOException;
 import java.io.InputStream;
@@ -86,7 +87,6 @@ public class BlazingResponse {
 				String bodyString = new String(requestBodyBytes, StandardCharsets.ISO_8859_1);
 				String[] parts = bodyString.split(boundaryPrefix);
 
-
 				// Process each part (fields and files)
 				for (String part : parts) {
 					// Check if the part is not empty
@@ -127,6 +127,7 @@ public class BlazingResponse {
 		}
 		return null;
 	}
+
 	private String extractFieldName(String part) {
 		// Find the position of name=
 		int startIndex = part.indexOf("name=");
@@ -140,6 +141,7 @@ public class BlazingResponse {
 		}
 		return null;
 	}
+
 	private String extractFileName(String part) {
 		String fileName = null;
 
@@ -161,7 +163,6 @@ public class BlazingResponse {
 
 		return fileName;
 	}
-
 
 	/**
 	 * Query parameters can be passed with the request without modifying the
@@ -188,10 +189,9 @@ public class BlazingResponse {
 		return this.params;
 	}
 
-	
 	/**
 	 * Holds the files parsed from a multipart/form-data form
-	 * 
+	 *
 	 * <pre>
 	 * {@code
 	 * @Post("/v1/post/upload")
@@ -201,7 +201,8 @@ public class BlazingResponse {
 	 * }
 	 * </pre>
 	 *
-	 * @return Returns a Map of file names and their binary representations as binary data
+	 * @return Returns a Map of file names and their binary representations as
+	 * binary data
 	 */
 	public Map<String, byte[]> files() {
 		return this.files;
@@ -309,6 +310,107 @@ public class BlazingResponse {
 	public void sendStatus(int status) {
 		try {
 			exchange.sendResponseHeaders(status, -1);
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
+
+	/**
+	 * Streams a file to the client for download purposes, 
+	 * the default content type is "application/octet-stream"
+	 * 
+	 * {@code 
+	 * 	response.streamFile("Vid.mp4", (outstream, file) -> {
+	 * 		byte[] buffer = new byte[4096]; // 4KB
+	 * 		int bytesRead;
+	 * 		while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+	 * 			outputStream.write(buffer, 0, bytesRead);
+	 * 		}
+	 * 	});
+	 * }
+	 * 
+	 * @param filename
+	 * @param callback 
+	 */
+	public void streamFile(String filename, BlazingStreamFunction callback) {
+		exchange.getResponseHeaders().set("Content-Type", "application/octet-stream");
+		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		try {
+			exchange.sendResponseHeaders(200, 0); // Size = 0 because we are streaming the file dynamically
+			try (OutputStream out = exchange.getResponseBody()) {
+				callback.stream(out, new File(filename));
+			}
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
+
+	/**
+	 * Streams a file to the client for download purposes
+	 * 
+	 * {@code 
+	 * 	response.streamFile("Archive.zip", "application/zip", (outstream, file) -> {
+	 * 		byte[] buffer = new byte[4096]; // 4KB
+	 * 		int bytesRead;
+	 * 		while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+	 * 			outputStream.write(buffer, 0, bytesRead);
+	 * 		}
+	 * 	});
+	 * 
+	 * @param filename
+	 * @param stream_type
+	 * @param callback 
+	 */
+	public void streamFile(String filename, String stream_type, BlazingStreamFunction callback) {
+		exchange.getResponseHeaders().set("Content-Type", stream_type);
+		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		try {
+			exchange.sendResponseHeaders(200, 0); // Size = 0 because we are streaming the file dynamically
+			try (OutputStream out = exchange.getResponseBody()) {
+				callback.stream(out, new File(filename));
+			}
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
+
+	/**
+	 * Streams a file with a size that is known upfront. This is useful for sending small files such as .pdf documents, etc.
+	 * Sets the content type to "application/octet-stream" as the default value
+	 * @param filename
+	 * @param stream_type
+	 * @param callback 
+	 */
+	public void streamSizedFile(String filename, BlazingStreamFunction callback) {
+		exchange.getResponseHeaders().set("Content-Type", "application/octet-stream");
+		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		try {
+			File fp = new File(filename);
+			exchange.sendResponseHeaders(200, fp.length()); 
+			try (OutputStream out = exchange.getResponseBody()) {
+				callback.stream(out, fp) ;
+			}
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
+
+	
+	/**
+	 * Streams a file with a size that is known upfront. This is useful for sending small files such as .pdf documents, etc.
+	 * @param filename
+	 * @param stream_type
+	 * @param callback 
+	 */
+	public void streamSizedFile(String filename, String stream_type, BlazingStreamFunction callback) {
+		exchange.getResponseHeaders().set("Content-Type", stream_type);
+		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		try {
+			File fp = new File(filename);
+			exchange.sendResponseHeaders(200, fp.length()); 
+			try (OutputStream out = exchange.getResponseBody()) {
+				callback.stream(out, fp) ;
+			}
 		} catch (IOException ex) {
 			BlazingLog.severe(ex.getMessage());
 		}
