@@ -19,6 +19,12 @@ public class Script extends WebXElement {
 		this.type = "text/javascript"; 
 	}
 
+  public Script(String code, String src, String type) {
+    this.code = code; 
+    this.src = src; 
+    this.type = type;
+  }
+
 	public Script src(String path) {
 		this.path = path; 
 		return this;
@@ -37,6 +43,6 @@ public class Script extends WebXElement {
 		if (!this.type.isEmpty())
 			this.attributes.addAttribute("type", this.type);
 		
-		return String.format("<script %s> %s </script>", this.attributes.render(), this.code.isEmpty() ? "" : this.code);
+		return String.format("<script %s> %s </script>", this.attributes.render(), this.code);
 	}
 }
