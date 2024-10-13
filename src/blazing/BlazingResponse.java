@@ -394,8 +394,8 @@ public class BlazingResponse {
 	 * @param callback
 	 */
 	public void streamFile(String filename, BlazingStreamFunction callback) {
-		exchange.getResponseHeaders().set("Content-Type", "application/octet-stream");
-		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		setHeader("Content-Type", "application/octet-stream");
+		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 		try {
 			exchange.sendResponseHeaders(200, 0); // Size = 0 because we are streaming the file dynamically
 			try (OutputStream out = exchange.getResponseBody()) {
@@ -417,14 +417,14 @@ public class BlazingResponse {
 	 * 			outputStream.write(buffer, 0, bytesRead);
 	 * 		}
 	 * 	});
-	 *
+	 * }
 	 * @param filename
 	 * @param stream_type
 	 * @param callback
 	 */
 	public void streamFile(String filename, String stream_type, BlazingStreamFunction callback) {
-		exchange.getResponseHeaders().set("Content-Type", stream_type);
-		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		setHeader("Content-Type", stream_type);
+		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 		try {
 			exchange.sendResponseHeaders(200, 0); // Size = 0 because we are streaming the file dynamically
 			try (OutputStream out = exchange.getResponseBody()) {
@@ -441,12 +441,11 @@ public class BlazingResponse {
 	 * "application/octet-stream" as the default value
 	 *
 	 * @param filename
-	 * @param stream_type
 	 * @param callback
 	 */
 	public void streamSizedFile(String filename, BlazingStreamFunction callback) {
-		exchange.getResponseHeaders().set("Content-Type", "application/octet-stream");
-		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		setHeader("Content-Type", "application/octet-stream");
+		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 		try {
 			File fp = new File(filename);
 			exchange.sendResponseHeaders(200, fp.length());
@@ -467,8 +466,8 @@ public class BlazingResponse {
 	 * @param callback
 	 */
 	public void streamSizedFile(String filename, String stream_type, BlazingStreamFunction callback) {
-		exchange.getResponseHeaders().set("Content-Type", stream_type);
-		exchange.getResponseHeaders().set("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		setHeader("Content-Type", stream_type);
+		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 		try {
 			File fp = new File(filename);
 			exchange.sendResponseHeaders(200, fp.length());
