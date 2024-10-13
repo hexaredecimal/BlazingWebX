@@ -21,7 +21,7 @@ public class Script extends WebXElement {
 
   public Script(String code, String src, String type) {
     this.code = code; 
-    this.src = src; 
+    this.path = src; 
     this.type = type;
   }
 
