@@ -382,10 +382,17 @@ public class BlazingResponse {
 	 *
 	 * {@code
 	 * 	response.streamFile("Vid.mp4", (outstream, file) -> {
-	 * 		byte[] buffer = new byte[4096]; // 4KB
+	 * 	try (FileInputStream fileInputStream = new FileInputStream(file)) {
+	 * 		byte[] buffer = new byte[4096];
 	 * 		int bytesRead;
 	 * 		while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-	 * 			outputStream.write(buffer, 0, bytesRead);
+	 * 			outstream.write(buffer, 0, bytesRead);
+	 * 		}
+	 * 		outstream.flush();
+	 * 	} catch (FileNotFoundException ex) {
+	 * 		BlazingLog.severe(ex.getMessage());
+	 * 	} catch (IOException ex) {
+	 * 		BlazingLog.severe(ex.getMessage());
 	 * 	}
 	 * }); 
 	 * }
@@ -394,12 +401,13 @@ public class BlazingResponse {
 	 * @param callback
 	 */
 	public void streamFile(String filename, BlazingStreamFunction callback) {
+		File fp = new File(filename);
 		setHeader("Content-Type", "application/octet-stream");
-		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		setHeader("Content-Disposition", "attachment; filename=\"" + fp.getName() + "\"");
 		try {
 			exchange.sendResponseHeaders(200, 0); // Size = 0 because we are streaming the file dynamically
 			try (OutputStream out = exchange.getResponseBody()) {
-				callback.stream(out, new File(filename));
+				callback.stream(out, fp);
 			}
 		} catch (IOException ex) {
 			BlazingLog.severe(ex.getMessage());
@@ -411,11 +419,18 @@ public class BlazingResponse {
 	 *
 	 * {@code
 	 * 	response.streamFile("Archive.zip", "application/zip", (outstream, file) -> {
-	 * 		byte[] buffer = new byte[4096]; // 4KB
+	 *	try (FileInputStream fileInputStream = new FileInputStream(file)) {
+	 * 		byte[] buffer = new byte[4096];
 	 * 		int bytesRead;
 	 * 		while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-	 * 			outputStream.write(buffer, 0, bytesRead);
+	 * 			outstream.write(buffer, 0, bytesRead);
 	 * 		}
+	 * 		outstream.flush();
+	 * 	} catch (FileNotFoundException ex) {
+	 * 		BlazingLog.severe(ex.getMessage());
+	 * 	} catch (IOException ex) {
+	 * 		BlazingLog.severe(ex.getMessage());
+	 * }
 	 * 	});
 	 * }
 	 * @param filename
@@ -423,12 +438,13 @@ public class BlazingResponse {
 	 * @param callback
 	 */
 	public void streamFile(String filename, String stream_type, BlazingStreamFunction callback) {
+		File fp = new File(filename);
 		setHeader("Content-Type", stream_type);
-		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		setHeader("Content-Disposition", "attachment; filename=\"" + fp.getName() + "\"");
 		try {
 			exchange.sendResponseHeaders(200, 0); // Size = 0 because we are streaming the file dynamically
 			try (OutputStream out = exchange.getResponseBody()) {
-				callback.stream(out, new File(filename));
+				callback.stream(out, fp);
 			}
 		} catch (IOException ex) {
 			BlazingLog.severe(ex.getMessage());
@@ -444,10 +460,10 @@ public class BlazingResponse {
 	 * @param callback
 	 */
 	public void streamSizedFile(String filename, BlazingStreamFunction callback) {
+		File fp = new File(filename);
 		setHeader("Content-Type", "application/octet-stream");
-		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		setHeader("Content-Disposition", "attachment; filename=\"" + fp.getName() + "\"");
 		try {
-			File fp = new File(filename);
 			exchange.sendResponseHeaders(200, fp.length());
 			try (OutputStream out = exchange.getResponseBody()) {
 				callback.stream(out, fp);
@@ -466,10 +482,10 @@ public class BlazingResponse {
 	 * @param callback
 	 */
 	public void streamSizedFile(String filename, String stream_type, BlazingStreamFunction callback) {
-		setHeader("Content-Type", stream_type);
-		setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		File fp = new File(filename);
+		setHeader("Content-Type", "application/pdf");
+		setHeader("Content-Disposition", "attachment; filename=\"" + fp.getName() + "\"");
 		try {
-			File fp = new File(filename);
 			exchange.sendResponseHeaders(200, fp.length());
 			try (OutputStream out = exchange.getResponseBody()) {
 				callback.stream(out, fp);
