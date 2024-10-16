@@ -81,6 +81,12 @@ public class WebXContainerElement extends WebXElement {
 	}
 
 	@Override
+	public WebXContainerElement hxOn(String event) {
+		super.hxOn(event);
+		return this;
+	}
+	
+	@Override
 	public WebXContainerElement hxExt(String ext) {
 		super.hxExt(ext);
 		return this;

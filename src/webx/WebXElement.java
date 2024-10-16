@@ -163,6 +163,10 @@ public abstract class WebXElement {
 		return this;
 	}
 
+	public WebXElement hxOn(String event) {
+		this.attr("hx-on", event);
+		return this;
+	}
 	
 	public WebXElement hxPost(String path) {
 		this.attr("hx-post", path);
