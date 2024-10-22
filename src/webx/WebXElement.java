@@ -163,26 +163,75 @@ public abstract class WebXElement {
 		return this;
 	}
 
+	/**
+	 * The hxOn method allow you to embed scripts inline to respond to events directly on an element; 
+	 * similar to the onevent properties found in HTML, such as onClick.
+	 * The hx-on* attributes improve upon onevent by enabling the
+	 * handling of any arbitrary JavaScript event, for enhanced Locality of
+	 * Behaviour (LoB) even when dealing with non-standard DOM events
+	 * 
+	 * @see <a href="https://htmx.org/attributes/hx-on/">htmx docs</a>
+	 * 
+	 * @param event
+	 * @return 
+	 */
 	public WebXElement hxOn(String event) {
 		this.attr("hx-on", event);
 		return this;
 	}
 	
+	/**
+	 * The hxPost method will cause an element to issue a POST to the
+	 * specified URL and swap the HTML into the DOM using a swap strategy
+	 * 
+	 * @see <a href="https://htmx.org/attributes/hx-post/">htmx docs</a>
+	 * 
+	 * @param path
+	 * @return 
+	 */
 	public WebXElement hxPost(String path) {
 		this.attr("hx-post", path);
 		return this;
 	}
 
+	/**
+	 * The hxGet method will cause an element to issue a GET to the specified
+	 * URL and swap the HTML into the DOM using a swap strategy
+	 * 
+	 * @see <a href="https://htmx.org/attributes/hx-get/">htmx docs</a>
+	 * 
+	 * @param path
+	 * @return 
+	 */
 	public WebXElement hxGet(String path) {
 		this.attr("hx-get", path);
 		return this;
 	}
 
+	/**
+	 * The hxBoost attribute allows you to “boost” normal anchors and form tags to
+	 * use AJAX instead.
+	 * 
+	 * @see <a href="https://htmx.org/attributes/hx-boost/">htmx docs</a>
+	 * 
+	 * @param value
+	 * @return 
+	 */
 	public WebXElement hxBoost(String value) {
 		this.attr("hx-boost", value);
 		return this;
 	}
 
+	/**
+	 * The hxConfirm method allows you to confirm an action before issuing a
+	 * request. This can be useful in cases where the action is destructive and
+	 * you want to ensure that the user really wants to do it.
+	 * 
+	 * @see <a href="https://htmx.org/attributes/hx-confirm/">htmx docs</a>
+	 * 
+	 * @param message
+	 * @return 
+	 */
 	public WebXElement hxConfirm(String message) {
 		this.attr("hx-get", message);
 		return this;
