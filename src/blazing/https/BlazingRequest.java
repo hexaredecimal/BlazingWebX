@@ -13,6 +13,7 @@ import java.util.Map;
 
 import blazing.types.Result;
 import java.io.IOException;
+import java.net.URI;
 
 /**
  *
@@ -150,7 +151,8 @@ public class BlazingRequest {
 
 	private static Result<String, IOException> doMethodWithBody(String method, String url, String content_type, Map<?, ?> args) {
 		try {
-			var server = new URL(url);
+			URI uri = URI.create(url);
+			var server = uri.toURL(); 
 			URLConnection con = server.openConnection();
 			HttpURLConnection http = (HttpURLConnection) con;
 			http.setRequestMethod(method.toUpperCase());
@@ -203,7 +205,8 @@ public class BlazingRequest {
 
 	private static Result<String, IOException> doMethodWithBody(String method, String url, String content_type, String args) {
 		try {
-			var server = new URL(url);
+			URI uri = URI.create(url);
+			var server = uri.toURL(); 
 			URLConnection con = server.openConnection();
 			HttpURLConnection http = (HttpURLConnection) con;
 			http.setRequestMethod(method.toUpperCase());
@@ -258,8 +261,8 @@ public class BlazingRequest {
 	private static Result<String, IOException> doMethodWithoutBody(String method, String urlString) {
 		HttpURLConnection http = null;
 		try {
-			// Create a URL object with the target URL
-			URL url = new URL(urlString);
+			URI uri = URI.create(urlString);
+			URL url = uri.toURL();
 			http = (HttpURLConnection) url.openConnection();
 			http.setRequestMethod(method.toUpperCase());
 
