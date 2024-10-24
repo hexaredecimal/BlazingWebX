@@ -157,7 +157,7 @@ public class BlazingRequest {
 			HttpURLConnection http = (HttpURLConnection) con;
 			http.setRequestMethod(method.toUpperCase());
 			http.setDoOutput(true);
-			String results = Query.from(args);
+			String results = Query.from(args).unwrap();
 			byte[] out = results.getBytes(StandardCharsets.UTF_8);
 			int length = out.length;
 			http.setFixedLengthStreamingMode(length);
