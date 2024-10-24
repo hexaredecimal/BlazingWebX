@@ -11,8 +11,13 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashUtils {
 
+	/**
+	 * Hashes a String input using the SHA-256 algorithm.
+	 * @param input
+	 * @return A Result Object which contains a hashed String if successful and a
+	 * NoSuchAlgorithmException if not.
+	 */
   public static Result<String, NoSuchAlgorithmException> hash(String input) {
-    // Create an instance of the MessageDigest class
     MessageDigest digest;
     try {
       digest = MessageDigest.getInstance("SHA-256");
@@ -20,10 +25,8 @@ public class HashUtils {
       return Result.err(ex);
     }
 
-    // Perform the hashing
     byte[] hashedBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
 
-    // Convert bytes to hex format
     StringBuilder sb = new StringBuilder();
     for (byte b : hashedBytes) {
       sb.append(String.format("%02x", b));
@@ -32,8 +35,14 @@ public class HashUtils {
     return Result.ok(sb.toString());
   }
 
+	/**
+	 * Hashes a String input using Any supported algorithm.
+	 * @param algorithm
+	 * @param input
+	 * @return A Result Object which contains a hashed String if successful and a
+	 * NoSuchAlgorithmException if not.
+	 */
   public static Result<String, NoSuchAlgorithmException> hash(String algorithm, String input) {
-    // Create an instance of the MessageDigest class
     MessageDigest digest;
     try {
       digest = MessageDigest.getInstance(algorithm.toUpperCase());
@@ -41,10 +50,8 @@ public class HashUtils {
       return Result.err(ex);
     }
 
-    // Perform the hashing
     byte[] hashedBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
 
-    // Convert bytes to hex format
     StringBuilder sb = new StringBuilder();
     for (byte b : hashedBytes) {
       sb.append(String.format("%02x", b));
