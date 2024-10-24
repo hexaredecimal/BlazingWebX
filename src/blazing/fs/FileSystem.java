@@ -16,6 +16,11 @@ public class FileSystem {
   private FileSystem() {
   }
 
+	/**
+	 * Opens a file and reads the contents into a String
+	 * @param path
+	 * @return A result Object which has a string if successful and a FileNotFoundException if not.
+	 */
   public static Result<String, FileNotFoundException> readFileToString(String path) {
     try (
       Scanner sc = new Scanner(new File(path));) {
@@ -30,6 +35,12 @@ public class FileSystem {
     }
   }
 
+	/**
+	 * Write the data into the file provided
+	 * @param fp
+	 * @param data
+	 * @return A Result Object with the boolean value true is successful and an Exception if not. 
+	 */
   public static Result<Boolean, Exception> writeToFile(File fp, String data) {
     if (fp == null) {
       return Result.err(new Exception("File reference is null"));
@@ -51,6 +62,12 @@ public class FileSystem {
     }
   }
 
+	/**
+	 * Writes and appends the data provided into the file
+	 * @param fp
+	 * @param data
+	 * @return A Result Object with the boolean value true is successful and an Exception if not. 
+	 */
   public static Result<Boolean, Exception> appendToFile(File fp, String... data) {
     if (fp == null) {
       return Result.err(new Exception("File reference is null"));
@@ -74,6 +91,11 @@ public class FileSystem {
     }
   }
 
+	/**
+	 * Extracts the file extension of a file.
+	 * @param path
+	 * @return The file extension or null if there is none.
+	 */
   public static String fileExtension(String path) {
     int lastDot = path.lastIndexOf('.');
     return lastDot == -1 ? null : path.substring(lastDot + 1);
