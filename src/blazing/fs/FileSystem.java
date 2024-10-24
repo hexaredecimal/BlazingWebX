@@ -16,7 +16,7 @@ public class FileSystem {
   private FileSystem() {
   }
 
-  public static String readFileToString(String path) {
+  public static Result<String, FileNotFoundException> readFileToString(String path) {
     try (
       Scanner sc = new Scanner(new File(path));) {
       StringBuilder sb = new StringBuilder();
@@ -24,9 +24,9 @@ public class FileSystem {
         sb.append(sc.nextLine()).append("\n");
       }
 
-      return sb.toString();
+      return Result.ok(sb.toString());
     } catch (FileNotFoundException ex) {
-      return ex.getMessage();
+      return Result.err(ex);
     }
   }
 
