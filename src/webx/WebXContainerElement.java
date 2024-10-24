@@ -14,6 +14,12 @@ public class WebXContainerElement extends WebXElement {
 		this.children = new ArrayList<>();
 	}
 
+	/**
+	 * Appends multiple child nodes to the parent at once. 
+	 * 
+	 * @param children Comma separated list of children or an array of child nodes
+	 * @return A modified element 
+	 */
 	public WebXContainerElement addChildren(WebXElement... children) {
 		for (WebXElement child: children) {
 			this.children.add(child); 
@@ -21,6 +27,12 @@ public class WebXContainerElement extends WebXElement {
 		return this; 
 	}
 
+	/**
+	 * Appends a child to the parent class
+	 * 
+	 * @param child The actual child node 
+	 * @return A modified element 
+	 */
 	public WebXContainerElement addChild(WebXElement child) {
 		this.children.add(child); 
 		return this; 
@@ -63,14 +75,14 @@ public class WebXContainerElement extends WebXElement {
 	}
 
 	@Override
-	public WebXContainerElement hxSwapOob(String target) {
-		super.hxSwap(target);
+	public WebXContainerElement hxSwapOob(String value) {
+		super.hxSwapOob(value);
 		return this;
 	}
 
 	@Override
-	public WebXContainerElement hxBoost(String value) {
-		super.hxBoost(value);
+	public WebXContainerElement hxBoost(boolean activate) {
+		super.hxBoost(activate);
 		return this;
 	}
 
@@ -99,8 +111,8 @@ public class WebXContainerElement extends WebXElement {
 	}
 
 	@Override
-	public WebXContainerElement hxSend(String path) {
-		super.hxSend(path);
+	public WebXContainerElement hxSend() {
+		super.hxSend();
 		return this;
 	}
 
@@ -117,8 +129,8 @@ public class WebXContainerElement extends WebXElement {
 	}
 
 	@Override
-	public WebXContainerElement hxSwap(String target) {
-		super.hxSwap(target);
+	public WebXContainerElement hxSwap(String strategy) {
+		super.hxSwap(strategy);
 		return this;
 	}
 
