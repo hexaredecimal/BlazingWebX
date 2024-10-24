@@ -12,6 +12,13 @@ import java.util.Map;
  */
 public class JSon {
 
+	/**
+	 * Create a Json String from a Hashmap 
+	 * @param map
+	 * @return 
+	 * @return A Result Object which contains a hashed String if successful and an 
+	 * Exception if not.
+	 */
 	public static Result<String, Exception> from(Map<?, ?> map) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{".indent(0));
