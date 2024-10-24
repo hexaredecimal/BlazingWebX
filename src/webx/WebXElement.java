@@ -12,8 +12,8 @@ public abstract class WebXElement {
 	/**
 	 * Adds an attribute to the element
 	 *
-	 * @param key
-	 * @param value
+	 * @param key The attribute identifier or name
+	 * @param value The attribute value
 	 * @return A modified element
 	 */
 	public WebXElement attr(String key, String value) {
@@ -36,7 +36,8 @@ public abstract class WebXElement {
 	 * }
 	 * </pre>
 	 *
-	 * @param val
+	 * @param val Custom data to be send to the server along with the request. 
+	 * Useful when sending post requests. 
 	 * @return A modified element
 	 */
 	public WebXElement hxVals(String val) {
@@ -58,8 +59,8 @@ public abstract class WebXElement {
 	 * }
 	 * </pre>
 	 *
-	 * @param trigger
-	 * @return
+	 * @param trigger The event that triggers the http request
+	 * @return A modified element
 	 */
 	public WebXElement hxTrigger(String trigger) {
 		this.attr("hx-trigger", trigger);
@@ -80,8 +81,8 @@ public abstract class WebXElement {
 	 * }
 	 * </pre>
 	 *
-	 * @param trigger
-	 * @return
+	 * @param target The target element to be replaced with the response html
+	 * @return A modified element
 	 */
 	public WebXElement hxTarget(String target) {
 		this.attr("hx-target", target);
@@ -103,12 +104,12 @@ public abstract class WebXElement {
 	 * }
 	 * </pre>
 	 *
-	 * @param trigger
-	 * @return
+	 * @param strategy The swap strategy to be used
+	 * @return A modified element
 	 */
 
-	public WebXElement hxSwap(String target) {
-		this.attr("hx-swap", target);
+	public WebXElement hxSwap(String strategy) {
+		this.attr("hx-swap", strategy);
 		return this;
 	}
 	
@@ -128,11 +129,11 @@ public abstract class WebXElement {
 	 * }
 	 * </pre>
 	 *
-	 * @param trigger
-	 * @return
+	 * @param value Activation (true) or a swap strategy
+	 * @return A modified element
 	 */
-	public WebXElement hxSwapOob(String target) {
-		this.attr("hx-swap-oob", target);
+	public WebXElement hxSwapOob(String value) {
+		this.attr("hx-swap-oob", value);
 		return this;
 	}
 
@@ -141,8 +142,9 @@ public abstract class WebXElement {
 	 * 
 	 * @see <a href="https://htmx.org/examples/file-upload/">htmx docs</a>
 	 * 
-	 * @param type
-	 * @return 
+	 * @param type The type of encoding which must be used. 
+	 * Note custom encoding formats are not yet supported for now.
+	 * @return A modified element 
 	 */
 	public WebXElement hxEncoding(String type) {
 		this.attr("hx-encoding", type);
@@ -155,8 +157,7 @@ public abstract class WebXElement {
 	 * 
 	 * @see <a href="https://htmx.org/examples/file-upload/">htmx docs</a>
 	 * 
-	 * @param type
-	 * @return 
+	 * @return A modified element 
 	 */
 	public WebXElement hxEncoding() {
 		this.attr("hx-encoding", "multipart/form-data");
@@ -172,8 +173,8 @@ public abstract class WebXElement {
 	 * 
 	 * @see <a href="https://htmx.org/attributes/hx-on/">htmx docs</a>
 	 * 
-	 * @param event
-	 * @return 
+	 * @param event Event which triggers the requests
+	 * @return A modified element 
 	 */
 	public WebXElement hxOn(String event) {
 		this.attr("hx-on", event);
@@ -186,8 +187,8 @@ public abstract class WebXElement {
 	 * 
 	 * @see <a href="https://htmx.org/attributes/hx-post/">htmx docs</a>
 	 * 
-	 * @param path
-	 * @return 
+	 * @param path Server endpoint to make the request to
+	 * @return A modified element 
 	 */
 	public WebXElement hxPost(String path) {
 		this.attr("hx-post", path);
@@ -200,8 +201,8 @@ public abstract class WebXElement {
 	 * 
 	 * @see <a href="https://htmx.org/attributes/hx-get/">htmx docs</a>
 	 * 
-	 * @param path
-	 * @return 
+	 * @param path Server endpoint to make the request to
+	 * @return A modified element 
 	 */
 	public WebXElement hxGet(String path) {
 		this.attr("hx-get", path);
@@ -214,11 +215,11 @@ public abstract class WebXElement {
 	 * 
 	 * @see <a href="https://htmx.org/attributes/hx-boost/">htmx docs</a>
 	 * 
-	 * @param value
-	 * @return 
+	 * @param activate The boolean value used to enable or disable the boost
+	 * @return A modified element 
 	 */
-	public WebXElement hxBoost(String value) {
-		this.attr("hx-boost", value);
+	public WebXElement hxBoost(boolean activate) {
+		this.attr("hx-boost", String.valueOf(activate));
 		return this;
 	}
 
@@ -229,39 +230,104 @@ public abstract class WebXElement {
 	 * 
 	 * @see <a href="https://htmx.org/attributes/hx-confirm/">htmx docs</a>
 	 * 
-	 * @param message
-	 * @return 
+	 * @param message Text to be used as a confirmation message
+	 * @return A modified element 
 	 */
 	public WebXElement hxConfirm(String message) {
 		this.attr("hx-get", message);
 		return this;
 	}
 
+	/**
+	 * The hxExt attribute enables an htmx extension for an element and all its
+	 * children.
+	 *
+	 * The value can be a single extension name or a comma separated list of
+	 * extensions to apply.
+	 *
+	 * The hxExt tag may be placed on parent elements if you want a plugin to
+	 * apply to an entire swath of the DOM, and on the body tag for it to apply to
+	 * all htmx requests.
+	 * 
+	 * @see <a href="https://htmx.org/attributes/hx-ext/">htmx docs</a>
+	 * 
+	 * @param ext The extension to be used
+	 * @return A modified element 
+	 */
 	public WebXElement hxExt(String ext) {
 		this.attr("hx-ext", ext);
 		return this;
 	}
 
+	/**
+	 * The WebSockets extension enables easy, bi-directional communication with
+	 * Web Sockets servers directly from HTML.
+	 * 
+	 * @see <a href="https://htmx.org/extensions/web-sockets/">htmx docs</a>
+	 * 
+	 * @param url Url for the websocket server
+	 * @return A modified element 
+	 */
 	public WebXElement hxWs(String url) {
 		this.attr("hx-ws", url);
 		return this;
 	}
 
-	public WebXElement hxSend(String path) {
-		this.attr("hx-send", path);
+	/**
+	 * Sends a message to the nearest websocket based on the trigger value for the
+	 * element
+	 * 
+	 * @see <a href="https://htmx.org/extensions/web-sockets/">htmx docs</a>
+	 * 
+	 * @return A modified element 
+	 */
+	public WebXElement hxSend() {
+		this.attr("hx-send", "");
 		return this;
 	}
 
+	/**
+	 * The id global attribute defines an identifier (ID) which must be unique in
+	 * the whole document.
+	 * 
+	 * The purpose of the ID attribute is to identify a single element when
+	 * linking (using a fragment identifier), scripting, or styling (with CSS).
+	 *
+	 * Elements with ID attributes are available as global properties. The
+	 * property name is the ID attribute, and the property value is the element.
+	 * 
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id">htmx docs</a>
+	 * 
+	 * @param id The identifier for the element
+	 * @return A modified element 
+	 */
 	public WebXElement id(String id) {
 		this.attr("id", id);
 		return this;
 	}
 
-
+	/**
+	 * The class global attribute is a list of the classes of the element,
+	 * separated by ASCII whitespace.
+	 * 
+	 * Classes allow CSS and JavaScript to select and access specific elements via
+	 * the class selectors or functions like the
+	 * document.getElementsByClassName().
+	 * 
+	 * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class">htmx docs</a>
+	 * 
+	 * @param names Whitespace separated list of classes
+	 * @return A modified element 
+	 */
 	public WebXElement className(String names) {
 		this.attr("class", names);
 		return this;
 	}
 
+	/**
+	 * Converts the Any webx element into its html representation, including all its children, recursively. 
+	 * 
+	 * @return The String representation of the element along with the children.
+	 */
 	public abstract String render();
 }
