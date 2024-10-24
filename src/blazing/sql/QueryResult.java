@@ -18,6 +18,11 @@ public class QueryResult {
 	private PreparedStatement stmt;
 	private Connection conn;
 
+	/**
+	 * Used to create a SQL statement from a connection and String.
+	 * @param conn
+	 * @param stmt 
+	 */
 	public QueryResult(Connection conn, String stmt) {
 		this.conn = conn;
 		try {
@@ -30,6 +35,12 @@ public class QueryResult {
 		}
 	}
 
+	/**
+	 * Sets the int value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setInt(int index, int value) {
 		try {
 			this.stmt.setInt(index, value);
@@ -39,6 +50,12 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Sets the float value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setFloat(int index, float value) {
 		try {
 			this.stmt.setFloat(index, value);
@@ -48,6 +65,12 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Sets the double value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setDouble(int index, double value) {
 		try {
 			this.stmt.setDouble(index, value);
@@ -57,6 +80,12 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Sets the double value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setString(int index, String value) {
 		try {
 			this.stmt.setString(index, value);
@@ -66,6 +95,12 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Sets the short value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setShort(int index, short value) {
 		try {
 			this.stmt.setShort(index, value);
@@ -75,6 +110,12 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Sets the long value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setLong(int index, long value) {
 		try {
 			this.stmt.setLong(index, value);
@@ -84,6 +125,12 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Sets the byte value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setByte(int index, byte value) {
 		try {
 			this.stmt.setByte(index, value);
@@ -93,6 +140,12 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Sets the byte array value at column specified by index.
+	 * @param index
+	 * @param value
+	 * @return 
+	 */
 	public QueryResult setBytes(int index, byte[] value) {
 		try {
 			this.stmt.setBytes(index, value);
@@ -102,6 +155,10 @@ public class QueryResult {
 		return this;
 	}
 
+	/**
+	 * Executes the SQL statement into a result set
+	 * @return 
+	 */
 	public ResultSet toResultSet() {
 		try {
 			ResultSet rs = this.stmt.executeQuery();
@@ -113,6 +170,10 @@ public class QueryResult {
 		return null;
 	}
 
+	/**
+	 * Executes the SQL statement
+	 * @return 
+	 */
 	public boolean execute() {
 		try {
 			return this.stmt.execute();
@@ -122,6 +183,12 @@ public class QueryResult {
 		return false;
 	}
 
+	/**
+	 * Performs Generic Object Relational Mapping of SQL columns to actual instances of a class.
+	 * @param <T>
+	 * @param cls
+	 * @return 
+	 */
 	public <T> List<T> mapExec(Class<T> cls) {
 		var rs = toResultSet();
 		List<T> objs = new ArrayList<>();
