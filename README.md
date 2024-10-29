@@ -23,7 +23,8 @@
 - [X] Support for most used HTTP methods
 - [X] Simple Map to Json implementation
 - [X] Simple Wrapper for Java hashing API
-- [X] Https request api 
+- [X] Https request API
+- [X] ORM API implementation
 
 ## Example
 >> You basically create 2 classes. Your program class containing your java entry point. This class registers your Server class.
