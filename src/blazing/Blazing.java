@@ -203,7 +203,7 @@ public class Blazing {
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
 				}).forEach(method -> {
 				String type = "PATCH";
-				String path = method.getAnnotation(Put.class).value();
+				String path = method.getAnnotation(Patch.class).value();
 				BlazingLog.info(String.format("Registered a %s route @Patch(`%s`)", type.toLowerCase(), path));
 				server.createContext(path, (HttpExchange he) -> {
 					String requestMethod = he.getRequestMethod();
@@ -231,7 +231,7 @@ public class Blazing {
 					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
 				}).forEach(method -> {
 				String type = "HEAD";
-				String path = method.getAnnotation(Put.class).value();
+				String path = method.getAnnotation(Head.class).value();
 				BlazingLog.info(String.format("Registered a %s route @Head(`%s`)", type.toLowerCase(), path));
 				server.createContext(path, (HttpExchange he) -> {
 					String requestMethod = he.getRequestMethod();
