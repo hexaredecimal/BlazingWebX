@@ -192,6 +192,63 @@ public class Blazing {
 				});
 			});
 
+
+			BlazingLog.info("Searching for @Patch methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Patch.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasOneArg = method.getParameterCount() == 1;
+					var paramTypes = method.getParameterTypes();
+					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
+				}).forEach(method -> {
+				String type = "PATCH";
+				String path = method.getAnnotation(Put.class).value();
+				BlazingLog.info(String.format("Registered a %s route @Patch(`%s`)", type.toLowerCase(), path));
+				server.createContext(path, (HttpExchange he) -> {
+					String requestMethod = he.getRequestMethod();
+					if (!requestMethod.equals(type)) {
+						return;
+					}
+
+					var response = new BlazingResponse(he);
+					try {
+						method.invoke(null, response);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
+					}
+				});
+			});
+
+
+			BlazingLog.info("Searching for @Head methods");
+			Stream.of(methods)
+				.filter(method -> {
+					var isAnnotated = method.isAnnotationPresent(Head.class);
+					var isStatic = Modifier.isStatic(method.getModifiers());
+					var hasOneArg = method.getParameterCount() == 1;
+					var paramTypes = method.getParameterTypes();
+					return isAnnotated && isStatic && hasOneArg && paramTypes[0].getName().equals(BlazingResponse.class.getName());
+				}).forEach(method -> {
+				String type = "HEAD";
+				String path = method.getAnnotation(Put.class).value();
+				BlazingLog.info(String.format("Registered a %s route @Head(`%s`)", type.toLowerCase(), path));
+				server.createContext(path, (HttpExchange he) -> {
+					String requestMethod = he.getRequestMethod();
+					if (!requestMethod.equals(type)) {
+						return;
+					}
+
+					var response = new BlazingResponse(he);
+					try {
+						method.invoke(null, response);
+					} catch (IllegalAccessException | InvocationTargetException ex) {
+						BlazingLog.severe(ex.toString());
+					}
+				});
+			});
+
+			
 			BlazingLog.info("Searching for @Delete methods");
 			Stream.of(methods)
 				.filter(method -> {
