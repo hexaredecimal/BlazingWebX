@@ -35,6 +35,11 @@ public class BlazingConnection {
 		return new QueryFirstPart("update " + table); 
 	}
 	
+	/**
+	 * Preforms a SQL DELETE statement
+	 * @param stmt
+	 * @return 
+	 */
 	public QueryFirstPart delete() {
 		return new QueryFirstPart("delete"); 
 	}
