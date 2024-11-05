@@ -30,6 +30,9 @@ public class BlazingConnection {
 		return new QueryFirstPart("update " + table); 
 	}
 	
+	public QueryFirstPart delete() {
+		return new QueryFirstPart("delete"); 
+	}
   
   public class QueryFirstPart {
     private String part; 
