@@ -11,6 +11,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -26,6 +27,8 @@ import jdk.jfr.Description;
  */
 public class Blazing {
 
+
+  private static int threads ;
 	/**
 	 * A simple way of creating and starting a webserver.
 	 *
@@ -304,7 +307,13 @@ public class Blazing {
 
 			BlazingLog.info("Done initializing server!");
 
-			server.setExecutor(null); // Use the default executor
+			if (threads == 0) {
+				BlazingLog.info("Using single-threaded executor");
+				server.setExecutor(null); // Use the default executor
+			} else {
+				BlazingLog.info(String.format("Using multithreaded executor with %d threads maximum", threads));
+				server.setExecutor(Executors.newFixedThreadPool(threads)); // Use the default executor
+			}
 			BlazingLog.info("Starting server :)");
 			server.start();
 			BlazingLog.info(String.format("Server is running at: localhost:%d", port));
@@ -313,4 +322,7 @@ public class Blazing {
 		}
 	}
 
+  public static void setThreadCount(int count) {
+    threads = count;
+  }
 }
