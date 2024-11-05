@@ -27,15 +27,15 @@ import jdk.jfr.Description;
  */
 public class Blazing {
 
+	private static int threads;
 
-  private static int threads ;
 	/**
 	 * A simple way of creating and starting a webserver.
 	 *
 	 * <pre>
 	 * {@code
 	 * ...
-	 * Blazing.createServer(WebServer.class);
+	 * Blazing.run(WebServer.class);
 	 * ...
 	 * }
 	 * </pre>
@@ -58,7 +58,6 @@ public class Blazing {
 			return;
 		}
 
-		
 		BlazingLog.fine("\n".repeat(2).concat(BlazingInfo.logo()));
 
 		String _port = root_cls.getAnnotation(WebServer.class).value();
@@ -195,7 +194,6 @@ public class Blazing {
 				});
 			});
 
-
 			BlazingLog.info("Searching for @Patch methods");
 			Stream.of(methods)
 				.filter(method -> {
@@ -222,7 +220,6 @@ public class Blazing {
 					}
 				});
 			});
-
 
 			BlazingLog.info("Searching for @Head methods");
 			Stream.of(methods)
@@ -251,7 +248,6 @@ public class Blazing {
 				});
 			});
 
-			
 			BlazingLog.info("Searching for @Delete methods");
 			Stream.of(methods)
 				.filter(method -> {
@@ -322,7 +318,7 @@ public class Blazing {
 		}
 	}
 
-  public static void setThreadCount(int count) {
-    threads = count;
-  }
+	public static void setThreadCount(int count) {
+		threads = count;
+	}
 }
