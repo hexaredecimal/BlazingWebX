@@ -26,6 +26,11 @@ public class BlazingConnection {
     return new QueryFirstPart("select " + stmt);
   }
 
+	/**
+	 * Preforms a SQL UPDATE statement
+	 * @param stmt
+	 * @return 
+	 */
 	public QueryFirstPart update(String table) {
 		return new QueryFirstPart("update " + table); 
 	}
@@ -51,6 +56,11 @@ public class BlazingConnection {
       return new QuerySecondPart(this.part);
     }
 
+		/**
+		 * Adds a SET statement to a SQL statement
+		 * @param stmt
+		 * @return 
+		 */
     public QuerySecondPart set(Query.QueryStmt stmt) {
       this.part += " set " + stmt;
       return new QuerySecondPart(this.part);
