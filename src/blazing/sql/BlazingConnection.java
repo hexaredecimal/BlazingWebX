@@ -25,6 +25,11 @@ public class BlazingConnection {
   public QueryFirstPart select(Query.QueryStmt stmt) {
     return new QueryFirstPart("select " + stmt);
   }
+
+	public QueryFirstPart update(String table) {
+		return new QueryFirstPart("update " + table); 
+	}
+	
   
   public class QueryFirstPart {
     private String part; 
@@ -42,6 +47,11 @@ public class BlazingConnection {
       this.part += " from " + stmt;
       return new QuerySecondPart(this.part);
     }
+
+    public QuerySecondPart set(Query.QueryStmt stmt) {
+      this.part += " set " + stmt;
+      return new QuerySecondPart(this.part);
+		}
   }
   
   public class QuerySecondPart {
