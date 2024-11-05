@@ -45,7 +45,7 @@ public class Blazing {
 	 *
 	 * @param root_cls The class which represent the web server.
 	 */
-	public static void createServer(Class<?> root_cls) {
+	public static void run(Class<?> root_cls) {
 		if (!root_cls.isAnnotationPresent(WebServer.class)) {
 			BlazingLog.severe(
 				String.format("Error: Class `%s` is not a webserver. Add `@WebServer` annotation before the class definition",
