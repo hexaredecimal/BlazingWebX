@@ -20,6 +20,7 @@ public class WebXContainerElement extends WebXElement {
 	 * @param children Comma separated list of children or an array of child nodes
 	 * @return A modified element 
 	 */
+	@Deprecated
 	public WebXContainerElement addChildren(WebXElement... children) {
 		for (WebXElement child: children) {
 			this.children.add(child); 
@@ -28,15 +29,44 @@ public class WebXContainerElement extends WebXElement {
 	}
 
 	/**
+	 * Appends multiple child nodes to the parent at once. 
+	 * 
+	 * @param children Comma separated list of children or an array of child nodes
+	 * @return A modified element 
+	 */
+	
+	public WebXContainerElement add(WebXElement... children) {
+		for (WebXElement child: children) {
+			this.children.add(child); 
+		}
+		return this; 
+	}
+	
+	/**
 	 * Appends a child to the parent class
 	 * 
 	 * @param child The actual child node 
 	 * @return A modified element 
 	 */
+	public WebXContainerElement add(WebXElement child) {
+		this.children.add(child); 
+		return this; 
+	}
+
+	
+	/**
+	 * Appends a child to the parent class
+	 * 
+	 * @param child The actual child node 
+	 * @return A modified element 
+	 */
+	@Deprecated
 	public WebXContainerElement addChild(WebXElement child) {
 		this.children.add(child); 
 		return this; 
 	}
+
+
 
 	@Override
 	public WebXContainerElement attr(String key, String value) {
