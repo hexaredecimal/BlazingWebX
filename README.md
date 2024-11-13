@@ -49,7 +49,7 @@ package example;
 
 import blazing.Route;
 import blazing.WebServer;
-import blazing.JediResponse;
+import blazing.BlazingResponse;
 import webx.*; 
 
 @WebServer("6900")
