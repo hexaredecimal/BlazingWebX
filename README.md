@@ -37,7 +37,7 @@ import blazing.Blazing;
 
 public class Program {
     public static void main() {
-        Blazing.createServer(HelloWorldServer.class);
+        Blazing.run(HelloWorldServer.class);
     }
 }
 ```
