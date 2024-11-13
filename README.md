@@ -69,7 +69,7 @@ public class HelloWorldServer {
     @Get("/")
     public static void home(BlazingResponse reponse) {
         var page = new Html()
-            .addChild(
+            .add(
                 new Button("Click Me")
                     .hxPost("/hello")
                     .hxSwap("outerHTML")
@@ -126,7 +126,7 @@ public class ClockComponent extends WebXElement {
 		}
 
 		return new Div()
-			.addChildren(
+			.add(
 				new P(_hour)
 					.hxTrigger("every 1s")
 					.hxGet("/hour"),
