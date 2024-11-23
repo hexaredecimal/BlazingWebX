@@ -50,7 +50,7 @@ public class FileSystem {
       return Result.err(new Exception(String.format("File `%s` does not exist", fp.getName())));
     }
 
-    if (!fp.isAbsolute()) {
+    if (fp.isDirectory()) {
       return Result.err(new Exception(String.format("File `%s` is a directory", fp.getName())));
     }
 
