@@ -181,6 +181,23 @@ This results in a simple project structure, one with zero configuration outside 
 - [latest](https://github.com/hexaredecimal/BlazingWebX/releases)
 - [documentation](https://blazingwebx.onrender.com/javadoc/index.html)
 
+### Maven 
+>> Please add the following to your maven pom file. 
+
+```xml
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	<dependency>
+	    <groupId>com.github.hexaredecimal</groupId>
+	    <artifactId>BlazingWebX</artifactId>
+	    <version>main-SNAPSHOT</version>
+	</dependency>
+```
+
 
 ## Star history
 [![Star History Chart](https://api.star-history.com/svg?repos=hexaredecimal/BlazingWebX&type=Date)](https://star-history.com/#hexaredecimal/BlazingWebX&Date)
