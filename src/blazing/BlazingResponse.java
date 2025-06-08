@@ -1,5 +1,6 @@
 package blazing;
 
+import blazing.https.MimeType;
 import blazing.lambda.BlazingStreamFunction;
 import blazing.types.Result;
 import com.sun.net.httpserver.HttpExchange;
@@ -271,6 +272,32 @@ public class BlazingResponse {
 	}
 
 	/**
+	 * Responds to the client with text data.
+	 *
+	 * <pre>
+	 * {@code
+	 * 		response.sendResponse("hello 1234");
+	 * }
+	 * </pre>
+	 *
+	 * The snipped above response with text data.
+	 *
+	 * @param data The actual data being sent to the client.
+	 * @param type The type of the data
+	 */
+	public void sendResponse(String data, MimeType type) {
+		setHeader("Content-Type", type.getMimeType());
+		try (OutputStream os = exchange.getResponseBody();) {
+			var _bytes = data.getBytes();
+			exchange.sendResponseHeaders(200, _bytes.length);
+			os.write(_bytes);
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
+
+
+	/**
 	 * Responds to the client with text data attached to a status code.
 	 *
 	 * <pre>
@@ -285,6 +312,32 @@ public class BlazingResponse {
 	 * @param data The actual data being sent to the client.
 	 */
 	public void sendResponse(int status, String data) {
+		try (OutputStream os = exchange.getResponseBody();) {
+			var _bytes = data.getBytes();
+			exchange.sendResponseHeaders(status, _bytes.length);
+			os.write(_bytes);
+		} catch (IOException ex) {
+			BlazingLog.severe(ex.getMessage());
+		}
+	}
+
+	/**
+	 * Responds to the client with text data attached to a status code.
+	 *
+	 * <pre>
+	 * {@code
+	 * 		response.sendResponse(404, "hello 1234", MimeType.CSV);
+	 * }
+	 * </pre>
+	 *
+	 * The snipped above response with text data.
+	 *
+	 * @param status The status code sent to the client
+	 * @param data The actual data being sent to the client.
+	 * @param type type The type of the data being sent
+	 */
+	public void sendResponse(int status, String data, MimeType type) {
+		setHeader("Content-Type", type.getMimeType());
 		try (OutputStream os = exchange.getResponseBody();) {
 			var _bytes = data.getBytes();
 			exchange.sendResponseHeaders(status, _bytes.length);
@@ -358,6 +411,25 @@ public class BlazingResponse {
 	}
 
 	/**
+	 * Sends a response along with the an array of bytes as a response to a request.
+	 * @param statusCode
+	 * @param responseBytes
+	 * @param type type The type of the data being sent
+	 * @return 
+	 */
+	public Result<Boolean, IOException> sendResponse(int statusCode, byte[] responseBytes, MimeType type) {
+		setHeader("Content-Type", type.getMimeType());
+		try (OutputStream os = exchange.getResponseBody()) {
+			exchange.sendResponseHeaders(statusCode, responseBytes.length);
+			os.write(responseBytes);
+			return Result.ok(true);
+		} catch (IOException ex) {
+			return Result.err(ex);
+		}
+	}
+
+
+	/**
 	 * Sends a status message to the client
 	 *
 	 * <pre>
@@ -402,7 +474,7 @@ public class BlazingResponse {
 	 */
 	public void streamFile(String filename, BlazingStreamFunction callback) {
 		File fp = new File(filename);
-		setHeader("Content-Type", "application/octet-stream");
+		setHeader("Content-Type", MimeType.COM.getMimeType());
 		setHeader("Content-Disposition", "attachment; filename=\"" + fp.getName() + "\"");
 		try {
 			exchange.sendResponseHeaders(200, 0); // Size = 0 because we are streaming the file dynamically
@@ -461,7 +533,7 @@ public class BlazingResponse {
 	 */
 	public void streamSizedFile(String filename, BlazingStreamFunction callback) {
 		File fp = new File(filename);
-		setHeader("Content-Type", "application/octet-stream");
+		setHeader("Content-Type", MimeType.COM.getMimeType());
 		setHeader("Content-Disposition", "attachment; filename=\"" + fp.getName() + "\"");
 		try {
 			exchange.sendResponseHeaders(200, fp.length());
@@ -483,7 +555,7 @@ public class BlazingResponse {
 	 */
 	public void streamSizedFile(String filename, String stream_type, BlazingStreamFunction callback) {
 		File fp = new File(filename);
-		setHeader("Content-Type", "application/pdf");
+		setHeader("Content-Type", stream_type);
 		setHeader("Content-Disposition", "attachment; filename=\"" + fp.getName() + "\"");
 		try {
 			exchange.sendResponseHeaders(200, fp.length());
