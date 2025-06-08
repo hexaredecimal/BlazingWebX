@@ -5,7 +5,7 @@ package blazing.https;
  * @author hexaredecimal
  */
 
-public enum MimeTypes {
+public enum MimeType {
 	THREE_DM("x-world/x-3dmf"),
 	THREE_DMF("x-world/x-3dmf"),
 	SEVEN_Z("application/x-7z-compressed"),
@@ -115,7 +115,7 @@ public enum MimeTypes {
 
 	private final String mimeType;
 
-	MimeTypes(String mimeType) {
+	MimeType(String mimeType) {
 		this.mimeType = mimeType;
 	}
 
